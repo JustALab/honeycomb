@@ -2,6 +2,7 @@ package com.honeycakesin.dto;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.honeycakesin.utils.AvailabilityStatus;
+import com.honeycakesin.utils.DeliveryToAddressType;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -22,27 +23,20 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "vendor_items")
-public class VendorItemsDto implements Serializable {
-	/**
-	 * VendorItemsDto is join table representing a ManyToMany relationship between
-	 * VendorDto & ItemDto. Since, VendorItemsDto has an extra
-	 * column(availability_status), the relationship is broken into a OneToMany
-	 * relationship and a ManyToOne relationship.
-	 */
+@Table(name = "customer_addresses")
+public class CustomerAddressDto implements Serializable {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long vendorItemsId;
-
+	long addressId;
+	
 	@ManyToOne
-	@JoinColumn(name = "vendor_id")
-	VendorDto vendorDto;
-
-	@ManyToOne
-	@JoinColumn(name = "item_id")
-	ItemDto itemDto;
+	@JoinColumn(name = "customer_id")
+	CustomerDto customerDto;
 
 	@Enumerated(EnumType.STRING)
-	AvailabilityStatus availabilityStatus;
-
+	DeliveryToAddressType deliveryToAddressType;
+	
+	@Column(nullable = false)
+	String address;
 }

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -19,18 +20,25 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "locations")
-public class LocationDto implements Serializable {
+@Table(name = "order_items")
+public class OrderItemsDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long locationId;
-
+	long orderItemsNumber;
+	
+	@ManyToOne
+	@JoinColumn(name = "order_number")
+	OrderDto orderDto;
+	
+	@OneToOne
+	@JoinColumn(name = "item_id")
+	ItemDto itemDto;
+	
 	@Column(nullable = false)
-	String locationName;
-
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "vendor_code")
-	VendorDto deliveryVendor;
-
+	int quantity;
+	
+	@Column(nullable = false)
+	double price;
+	
 }

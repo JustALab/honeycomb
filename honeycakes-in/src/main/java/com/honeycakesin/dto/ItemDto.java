@@ -17,15 +17,14 @@ import lombok.experimental.FieldDefaults;
 
 @SuppressWarnings("serial")
 @Data
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "items")
 public class ItemDto implements Serializable {
 
 	@Id
-	@Column(name = "item_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
+	long itemId;
 
 	@Column(nullable = false)
 	String itemName;

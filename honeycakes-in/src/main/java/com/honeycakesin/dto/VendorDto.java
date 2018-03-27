@@ -17,15 +17,14 @@ import lombok.experimental.FieldDefaults;
 
 @SuppressWarnings("serial")
 @Data
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "vendors")
 public class VendorDto implements Serializable {
 
 	@Id
-	@Column(name = "vendor_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
+	long vendorId;
 
 	@Column(nullable = false)
 	String vendorName;
@@ -47,5 +46,8 @@ public class VendorDto implements Serializable {
 	 */
 	@OneToMany(mappedBy = "vendorDto")
 	Set<VendorItemsDto> vendorItemsDtoSet;
+	
+	@OneToMany(mappedBy = "vendorDto")
+	Set<OrderDto> orderDtoSet;
 
 }
