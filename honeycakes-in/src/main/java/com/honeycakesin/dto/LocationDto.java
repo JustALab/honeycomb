@@ -30,7 +30,7 @@ public class LocationDto implements Serializable {
 	String locationName;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "vendor_code")
+	@JoinColumn(name = "vendor_id")
 	VendorDto deliveryVendor;
 
 }

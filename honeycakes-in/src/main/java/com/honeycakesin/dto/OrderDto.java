@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +24,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.honeycakesin.utils.DeliveryToAddressType;
 import com.honeycakesin.utils.FeedbackStatus;
 import com.honeycakesin.utils.OrderStatus;
 
@@ -64,6 +66,9 @@ public class OrderDto implements Serializable {
 
 	@Column(nullable = false)
 	double totalAmount;
+	
+	@Enumerated(EnumType.STRING)
+	DeliveryToAddressType deliveryToAddressType;
 
 	@Enumerated(EnumType.STRING)
 	OrderStatus orderStatus;
@@ -74,6 +79,6 @@ public class OrderDto implements Serializable {
 	@OneToMany(mappedBy = "orderDto")
 	Set<OrderItemsDto> orderItemsDtoSet;
 	
-	@OneToMany(mappedBy = "orderDto")
-	Set<OrderFeedbackDto> orderFeedbackDtoSet;
+	@OneToOne(mappedBy = "orderDto")
+	OrderFeedbackDto orderFeedbackDto;
 }

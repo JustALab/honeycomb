@@ -37,6 +37,6 @@ public class CustomerAddressDto implements Serializable {
 	@Enumerated(EnumType.STRING)
 	DeliveryToAddressType deliveryToAddressType;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	String address;
 }

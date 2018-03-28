@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,12 +36,13 @@ public class OrderFeedbackDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long orderItemsNumber;
+	long feedbackId;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "order_number")
 	OrderDto orderDto;
 	
+	//integer representation of rating from 1 to 5.
 	OrderRating orderRating;
 	
 	@Column(nullable = true)
@@ -50,6 +51,6 @@ public class OrderFeedbackDto implements Serializable{
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
-	Date feedbackTime;
+	Date feedbackDateTime;
 	
 }
