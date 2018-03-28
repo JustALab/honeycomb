@@ -34,7 +34,7 @@ import lombok.experimental.FieldDefaults;
 public class CustomerDto implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long customerId;
 	
 	@Column(nullable = false)
@@ -55,7 +55,7 @@ public class CustomerDto implements Serializable{
 	Date signupDate;
 	
 	@OneToMany(mappedBy = "customerDto")
-	Set<CustomerAddressDto> userAddressDtoSet;
+	Set<CustomerAddressDto> customerAddressDtoSet;
 	
 	@OneToMany(mappedBy = "customerDto")
 	Set<OrderDto> orderDtoSet;

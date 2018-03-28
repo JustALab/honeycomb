@@ -23,7 +23,7 @@ import lombok.experimental.FieldDefaults;
 public class LocationDto implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long locationId;
 
 	@Column(nullable = false)

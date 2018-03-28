@@ -35,7 +35,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderFeedbackDto implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long feedbackId;
 	
 	@OneToOne

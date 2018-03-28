@@ -5,11 +5,15 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.honeycakesin.utils.ItemCategory;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -23,14 +27,14 @@ import lombok.experimental.FieldDefaults;
 public class ItemDto implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long itemId;
 
 	@Column(nullable = false)
 	String itemName;
 
-	@Column(nullable = false)
-	String itemCategory;
+	@Enumerated(EnumType.STRING)
+	ItemCategory itemCategory;
 
 	@Column(nullable = false)
 	double itemPrice;

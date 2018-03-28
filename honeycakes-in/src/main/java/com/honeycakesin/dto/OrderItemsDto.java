@@ -24,7 +24,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderItemsDto implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long orderItemsNumber;
 	
 	@ManyToOne

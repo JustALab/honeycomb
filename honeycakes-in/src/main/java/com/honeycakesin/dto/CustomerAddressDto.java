@@ -27,7 +27,7 @@ import lombok.experimental.FieldDefaults;
 public class CustomerAddressDto implements Serializable {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long addressId;
 	
 	@ManyToOne

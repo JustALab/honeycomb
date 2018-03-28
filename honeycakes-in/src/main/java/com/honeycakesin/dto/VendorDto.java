@@ -23,7 +23,7 @@ import lombok.experimental.FieldDefaults;
 public class VendorDto implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long vendorId;
 
 	@Column(nullable = false)

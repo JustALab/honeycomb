@@ -37,7 +37,7 @@ import lombok.experimental.FieldDefaults;
 public class CustomerOtpDto implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long otpId;
 	
 	@ManyToOne

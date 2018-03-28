@@ -31,7 +31,7 @@ public class VendorItemsDto implements Serializable {
 	 * relationship and a ManyToOne relationship.
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long vendorItemsId;
 
 	@ManyToOne

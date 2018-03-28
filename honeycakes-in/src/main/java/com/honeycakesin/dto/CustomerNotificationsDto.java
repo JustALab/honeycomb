@@ -38,7 +38,7 @@ import lombok.experimental.FieldDefaults;
 public class CustomerNotificationsDto implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long notificationId;
 	
 	@ManyToOne
