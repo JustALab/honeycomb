@@ -35,7 +35,7 @@ import lombok.experimental.FieldDefaults;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "notificationDateTime" }, allowGetters = true)
 @Table(name = "customer_notifications")
-public class CusromerNotificationsDto implements Serializable{
+public class CustomerNotificationsDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
