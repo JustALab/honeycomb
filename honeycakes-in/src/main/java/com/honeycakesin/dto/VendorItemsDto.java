@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.honeycakesin.utils.AvailabilityStatus;
 
 import lombok.AccessLevel;
@@ -34,6 +35,7 @@ public class VendorItemsDto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long vendorItemsId;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "vendor_id")
 	VendorDto vendorDto;

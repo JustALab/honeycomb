@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.honeycakesin.utils.ItemCategory;
 
 import lombok.AccessLevel;
@@ -48,6 +49,7 @@ public class ItemDto implements Serializable {
 	 * column(availability_status), the relationship is broken into a OneToMany
 	 * relationship and a ManyToOne relationship.
 	 */
+	@JsonIgnore
 	@OneToMany(mappedBy = "itemDto")
 	Set<VendorItemsDto> vendorItemsDtoSet;
 
