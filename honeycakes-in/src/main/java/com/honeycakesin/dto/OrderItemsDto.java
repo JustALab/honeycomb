@@ -25,7 +25,7 @@ public class OrderItemsDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long orderItemsNumber;
+	Long orderItemsNumber;
 	
 	@ManyToOne
 	@JoinColumn(name = "order_number")
@@ -36,9 +36,9 @@ public class OrderItemsDto implements Serializable{
 	ItemDto itemDto;
 	
 	@Column(nullable = false)
-	int quantity;
+	Integer quantity;
 	
 	@Column(nullable = false)
-	double price;
+	Double price;
 	
 }

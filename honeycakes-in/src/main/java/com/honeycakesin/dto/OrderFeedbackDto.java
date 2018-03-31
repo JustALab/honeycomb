@@ -36,7 +36,7 @@ public class OrderFeedbackDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long feedbackId;
+	Long feedbackId;
 	
 	@OneToOne
 	@JoinColumn(name = "order_number")

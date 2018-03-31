@@ -39,7 +39,7 @@ public class CustomerNotificationsDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long notificationId;
+	Long notificationId;
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")

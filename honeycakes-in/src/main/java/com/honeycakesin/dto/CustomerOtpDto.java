@@ -38,7 +38,7 @@ public class CustomerOtpDto implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long otpId;
+	Long otpId;
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")

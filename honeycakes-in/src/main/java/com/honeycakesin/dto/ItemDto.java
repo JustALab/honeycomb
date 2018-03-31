@@ -29,7 +29,7 @@ public class ItemDto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long itemId;
+	Long itemId;
 
 	@Column(nullable = false)
 	String itemName;
@@ -38,10 +38,10 @@ public class ItemDto implements Serializable {
 	ItemCategory itemCategory;
 
 	@Column(nullable = false)
-	double itemPrice;
+	Double itemPrice;
 
 	@Column(nullable = false)
-	int quantitySlab;
+	Integer quantitySlab;
 
 	/**
 	 * VendorItemsDto is join table representing a ManyToMany relationship between

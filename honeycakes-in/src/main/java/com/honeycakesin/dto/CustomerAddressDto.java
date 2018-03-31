@@ -28,7 +28,7 @@ public class CustomerAddressDto implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long addressId;
+	Long addressId;
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")

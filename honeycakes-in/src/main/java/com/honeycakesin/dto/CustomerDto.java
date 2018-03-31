@@ -35,7 +35,7 @@ public class CustomerDto implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long customerId;
+	Long customerId;
 	
 	@Column(nullable = false)
 	String firstName;

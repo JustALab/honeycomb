@@ -43,7 +43,7 @@ public class OrderDto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long orderNumber;
+	Long orderNumber;
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
@@ -65,7 +65,7 @@ public class OrderDto implements Serializable {
 	Date deliveryTime;
 
 	@Column(nullable = false)
-	double totalAmount;
+	Double totalAmount;
 	
 	@Enumerated(EnumType.STRING)
 	DeliveryToAddressType deliveryToAddressType;

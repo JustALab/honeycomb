@@ -24,7 +24,7 @@ public class LocationDto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long locationId;
+	Long locationId;
 
 	@Column(nullable = false)
 	String locationName;

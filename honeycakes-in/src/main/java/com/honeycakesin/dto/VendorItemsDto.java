@@ -33,7 +33,7 @@ public class VendorItemsDto implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long vendorItemsId;
+	Long vendorItemsId;
 
 	@JsonIgnore
 	@ManyToOne

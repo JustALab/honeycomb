@@ -24,7 +24,7 @@ public class VendorDto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long vendorId;
+	Long vendorId;
 
 	@Column(nullable = false)
 	String vendorName;
