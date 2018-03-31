@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class LocationFilter {
 
-	long locationId;
+	Long locationId;
 
 	String locationName;
 
-	long deliveryVendorId;
+	Long deliveryVendorId;
 	
 	public LocationFilter(LocationDto locationDto) {
 		this.locationId = locationDto.getLocationId();

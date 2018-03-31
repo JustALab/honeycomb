@@ -19,7 +19,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.utils.OrderRating;
+import com.honeycakesin.constants.OrderRating;
 
 import lombok.AccessLevel;
 import lombok.Data;

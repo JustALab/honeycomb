@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.honeycakesin.utils.DeliveryToAddressType;
+import com.honeycakesin.constants.DeliveryToAddressType;
 
 import lombok.AccessLevel;
 import lombok.Data;

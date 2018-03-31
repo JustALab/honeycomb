@@ -24,9 +24,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.utils.DeliveryToAddressType;
-import com.honeycakesin.utils.FeedbackStatus;
-import com.honeycakesin.utils.OrderStatus;
+import com.honeycakesin.constants.DeliveryToAddressType;
+import com.honeycakesin.constants.FeedbackStatus;
+import com.honeycakesin.constants.OrderStatus;
 
 import lombok.AccessLevel;
 import lombok.Data;

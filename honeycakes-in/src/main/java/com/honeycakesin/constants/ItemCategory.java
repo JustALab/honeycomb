@@ -1,4 +1,4 @@
-package com.honeycakesin.utils;
+package com.honeycakesin.constants;
 
 public enum ItemCategory {
 	

@@ -1,24 +1,24 @@
 package com.honeycakesin.filter;
 
+import com.honeycakesin.constants.AvailabilityStatus;
+import com.honeycakesin.constants.ItemCategory;
 import com.honeycakesin.dto.ItemDto;
 import com.honeycakesin.dto.VendorItemsDto;
-import com.honeycakesin.utils.AvailabilityStatus;
-import com.honeycakesin.utils.ItemCategory;
 
 import lombok.Data;
 
 @Data
 public class VendorItemsFilter {
 
-	long itemId;
+	Long itemId;
 	
 	String itemName;
 	
 	ItemCategory itemCategory;
 	
-	double itemPrice;
+	Double itemPrice;
 	
-	int quantitySlab;
+	Integer quantitySlab;
 	
 	AvailabilityStatus availabilityStatus;
 

@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.honeycakesin.utils.AvailabilityStatus;
+import com.honeycakesin.constants.AvailabilityStatus;
 
 import lombok.AccessLevel;
 import lombok.Data;

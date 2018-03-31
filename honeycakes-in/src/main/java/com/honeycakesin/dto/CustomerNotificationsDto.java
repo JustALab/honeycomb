@@ -21,8 +21,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.utils.CustomerNotificationType;
-import com.honeycakesin.utils.NotificationDeliveryType;
+import com.honeycakesin.constants.CustomerNotificationType;
+import com.honeycakesin.constants.NotificationDeliveryType;
 
 import lombok.AccessLevel;
 import lombok.Data;

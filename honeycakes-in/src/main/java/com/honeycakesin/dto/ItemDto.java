@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.honeycakesin.utils.ItemCategory;
+import com.honeycakesin.constants.ItemCategory;
 
 import lombok.AccessLevel;
 import lombok.Data;

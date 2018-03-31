@@ -21,7 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.utils.OtpFor;
+import com.honeycakesin.constants.OtpFor;
 
 import lombok.AccessLevel;
 import lombok.Data;
