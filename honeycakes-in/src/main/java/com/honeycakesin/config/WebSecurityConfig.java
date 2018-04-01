@@ -27,64 +27,96 @@ import com.honeycakesin.service.JwtUserDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private JwtAuthenticationEntryPoint unauthorizedHandler;
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-	@Autowired
-	private JwtUserDetailsService jwtUserDetailsService;
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
 
-	@Value("${jwt.header}")
-	private String tokenHeader;
+    @Value("${jwt.header}")
+    private String tokenHeader;
 
-	@Value("${jwt.route.authentication.path}")
-	private String authenticationPath;
+    @Value("${jwt.route.authentication.path}")
+    private String authenticationPath;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoderBean());
-	}
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .userDetailsService(jwtUserDetailsService)
+            .passwordEncoder(passwordEncoderBean());
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoderBean() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoderBean() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/hc/auth/**").permitAll().anyRequest().authenticated();
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+            // we don't need CSRF because our token is invulnerable
+            .csrf().disable()
 
-		// Custom JWT based security filter
-		JwtAuthorizationTokenFilter authenticationTokenFilter = new JwtAuthorizationTokenFilter(userDetailsService(),
-				jwtTokenUtil, tokenHeader);
-		httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
-		// disable page caching
-		httpSecurity.headers().frameOptions().sameOrigin() // required to set for H2 else H2 Console will be blank.
-				.cacheControl();
-	}
+            // don't create session
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		// AuthenticationTokenFilter will ignore the below paths
-		web.ignoring().antMatchers(HttpMethod.POST, authenticationPath)
+            .authorizeRequests()
 
-				// allow anonymous resource requests
-				.and().ignoring()
-				.antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
+            // Un-secure H2 Database
+            .antMatchers("/h2-console/**/**").permitAll()
 
-				// Un-secure H2 Database (for testing purposes, H2 console shouldn't be
-				// unprotected in production)
-				.and().ignoring().antMatchers("/h2-console/**/**");
-	}
+            .antMatchers("/hc/auth/**").permitAll()
+            .anyRequest().authenticated();
+
+        // Custom JWT based security filter
+        JwtAuthorizationTokenFilter authenticationTokenFilter = new JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader);
+        httpSecurity
+            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // disable page caching
+        httpSecurity
+            .headers()
+            .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
+            .cacheControl();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // AuthenticationTokenFilter will ignore the below paths
+        web
+            .ignoring()
+            .antMatchers(
+                HttpMethod.POST,
+                authenticationPath
+            )
+
+            // allow anonymous resource requests
+            .and()
+            .ignoring()
+            .antMatchers(
+                HttpMethod.GET,
+                "/",
+                "/*.html",
+                "/favicon.ico",
+                "/**/*.html",
+                "/**/*.css",
+                "/**/*.js"
+            )
+
+            // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
+            .and()
+            .ignoring()
+            .antMatchers("/h2-console/**/**");
+    }
 }

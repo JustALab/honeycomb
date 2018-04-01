@@ -10,6 +10,7 @@ import com.honeycakesin.dto.UserDto;
 import com.honeycakesin.repository.UserRepository;
 import com.honeycakesin.security.JwtUserFactory;
 
+
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -18,12 +19,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDto userDto = userRepository.findByUsername(username);
+        UserDto user = userRepository.findByUsername(username);
 
-        if (userDto == null) {
+        if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         } else {
-            return JwtUserFactory.create(userDto);
+            return JwtUserFactory.create(user);
         }
     }
 }

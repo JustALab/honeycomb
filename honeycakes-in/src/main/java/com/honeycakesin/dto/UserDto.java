@@ -1,6 +1,6 @@
 package com.honeycakesin.dto;
 
-import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,34 +13,56 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.experimental.FieldDefaults;
 
-@SuppressWarnings("serial")
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "users")
-public class UserDto implements Serializable {
+@Table(name = "USER")
+public class UserDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	Long userId;
-	
-	@Column(length = 50, unique = true)
-	String username;
-	
-	@Column(length = 61, unique = true)
-	String password;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "USERNAME", length = 50, unique = true)
+    @NotNull
+    private String username;
+
+    @Column(name = "PASSWORD", length = 100)
+    @NotNull
+    private String password;
+
+    @Column(name = "FIRSTNAME", length = 50)
+    @NotNull
+    private String firstname;
+
+    @Column(name = "LASTNAME", length = 50)
+    @NotNull
+    private String lastname;
+
+    @Column(name = "EMAIL", length = 50)
+    @NotNull
+    private String email;
+
+    @Column(name = "ENABLED")
+    @NotNull
+    private Boolean enabled;
+
+    @Column(name = "LASTPASSWORDRESETDATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    private Date lastPasswordResetDate;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")})
-    List<RoleDto> roleDtoList;
-	
+            name = "USER_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    private List<AuthorityDto> authorities;
+
 }

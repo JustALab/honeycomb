@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.honeycakesin.Exception.AuthenticationException;
 import com.honeycakesin.security.JwtAuthenticationRequest;
 import com.honeycakesin.security.JwtTokenUtil;
+import com.honeycakesin.security.JwtUser;
 import com.honeycakesin.service.JwtAuthenticationResponse;
 
 @RestController
@@ -43,10 +44,15 @@ public class AuthenticationController {
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
+
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+
+        // Reload password post-security so we can generate the token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
+
+        // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
 
@@ -54,8 +60,15 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
-        String refreshedToken = jwtTokenUtil.refreshToken(token);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+
+        if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
+            String refreshedToken = jwtTokenUtil.refreshToken(token);
+            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @ExceptionHandler({AuthenticationException.class})

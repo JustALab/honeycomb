@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.honeycakesin.security.JwtTokenUtil;
 import com.honeycakesin.security.JwtUser;
 
-
 @RestController
 public class UserController {
 
@@ -36,4 +35,3 @@ public class UserController {
     }
 
 }
-

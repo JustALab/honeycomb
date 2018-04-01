@@ -6,26 +6,31 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.honeycakesin.dto.RoleDto;
+import com.honeycakesin.dto.AuthorityDto;
 import com.honeycakesin.dto.UserDto;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public final class JwtUserFactory {
 
-    public static JwtUser create(UserDto userDto) {
+    private JwtUserFactory() {
+    }
+
+    public static JwtUser create(UserDto user) {
         return new JwtUser(
-        		userDto.getUserId(),
-        		userDto.getUsername(),
-        		userDto.getPassword(),
-        		mapToGrantedRoles(userDto.getRoleDtoList())
+                user.getId(),
+                user.getUsername(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getPassword(),
+                mapToGrantedAuthorities(user.getAuthorities()),
+                user.getEnabled(),
+                user.getLastPasswordResetDate()
         );
     }
 
-    private static List<GrantedAuthority> mapToGrantedRoles(List<RoleDto> roleDtoList) {
-        return roleDtoList.stream()
-                .map(roleDto -> new SimpleGrantedAuthority(roleDto.getUserRole().name()))
+    private static List<GrantedAuthority> mapToGrantedAuthorities(List<AuthorityDto> authorities) {
+        return authorities.stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getName().name()))
                 .collect(Collectors.toList());
     }
 }
