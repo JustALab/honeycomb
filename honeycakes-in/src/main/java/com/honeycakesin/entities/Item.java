@@ -50,7 +50,7 @@ public class Item implements Serializable {
 	 * relationship and a ManyToOne relationship.
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy = "itemDto")
-	Set<VendorItems> vendorItemsDtoSet;
+	@OneToMany(mappedBy = "item")
+	Set<VendorItems> vendorItemsSet;
 
 }

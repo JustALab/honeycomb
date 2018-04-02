@@ -32,7 +32,7 @@ public class CustomerAddress implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
-	Customer customerDto;
+	Customer customer;
 
 	@Enumerated(EnumType.STRING)
 	DeliveryToAddressType deliveryToAddressType;

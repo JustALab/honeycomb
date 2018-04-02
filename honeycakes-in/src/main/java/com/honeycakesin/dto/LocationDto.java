@@ -13,10 +13,10 @@ public class LocationDto {
 
 	Long deliveryVendorId;
 	
-	public LocationDto(Location locationDto) {
-		this.locationId = locationDto.getLocationId();
-		this.locationName = locationDto.getLocationName();
-		this.deliveryVendorId = locationDto.getDeliveryVendor().getVendorId();
+	public LocationDto(Location location) {
+		this.locationId = location.getLocationId();
+		this.locationName = location.getLocationName();
+		this.deliveryVendorId = location.getDeliveryVendor().getVendorId();
 	}
 
 	public Long getDeliveryVendorId() {

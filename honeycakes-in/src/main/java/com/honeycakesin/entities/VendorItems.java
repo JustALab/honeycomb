@@ -38,11 +38,11 @@ public class VendorItems implements Serializable {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "vendor_id")
-	Vendor vendorDto;
+	Vendor vendor;
 
 	@ManyToOne
 	@JoinColumn(name = "item_id")
-	Item itemDto;
+	Item item;
 
 	@Enumerated(EnumType.STRING)
 	AvailabilityStatus availabilityStatus;

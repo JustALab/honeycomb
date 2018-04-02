@@ -21,48 +21,48 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "USER")
+@Table(name = "users")
 public class User {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "USERNAME", length = 50, unique = true)
+    @Column(name = "username", length = 50, unique = true)
     @NotNull
     private String username;
 
-    @Column(name = "PASSWORD", length = 100)
+    @Column(name = "password", length = 100)
     @NotNull
     private String password;
 
-    @Column(name = "FIRSTNAME", length = 50)
+    @Column(name = "firstname", length = 50)
     @NotNull
     private String firstname;
 
-    @Column(name = "LASTNAME", length = 50)
+    @Column(name = "lastname", length = 50)
     @NotNull
     private String lastname;
 
-    @Column(name = "EMAIL", length = 50)
+    @Column(name = "email", length = 50)
     @NotNull
     private String email;
 
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     @NotNull
     private Boolean enabled;
 
-    @Column(name = "LASTPASSWORDRESETDATE")
+    @Column(name = "lastpasswordresetdate")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date lastPasswordResetDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "USER_AUTHORITY",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
     private List<Authority> authorities;
 
 }

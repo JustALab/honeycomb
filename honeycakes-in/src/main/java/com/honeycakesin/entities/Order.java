@@ -47,11 +47,11 @@ public class Order implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
-	Customer customerDto;
+	Customer customer;
 
 	@ManyToOne
 	@JoinColumn(name = "vendor_id")
-	Vendor vendorDto;
+	Vendor vendor;
 
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -76,9 +76,9 @@ public class Order implements Serializable {
 	@Enumerated(EnumType.STRING)
 	FeedbackStatus feedbackStatus;
 	
-	@OneToMany(mappedBy = "orderDto")
-	Set<OrderItems> orderItemsDtoSet;
+	@OneToMany(mappedBy = "order")
+	Set<OrderItems> orderItemsSet;
 	
-	@OneToOne(mappedBy = "orderDto")
-	OrderFeedback orderFeedbackDto;
+	@OneToOne(mappedBy = "order")
+	OrderFeedback orderFeedback;
 }

@@ -24,11 +24,11 @@ import lombok.Data;
 public class Authority {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME", length = 50)
+    @Column(name = "name", length = 50)
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthorityName name;

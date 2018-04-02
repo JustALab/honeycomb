@@ -44,10 +44,10 @@ public class Vendor implements Serializable {
 	 * column(availability_status), the relationship is broken into a OneToMany
 	 * relationship and a ManyToOne relationship.
 	 */
-	@OneToMany(mappedBy = "vendorDto")
-	Set<VendorItems> vendorItemsDtoSet;
+	@OneToMany(mappedBy = "vendor")
+	Set<VendorItems> vendorItemsSet;
 	
-	@OneToMany(mappedBy = "vendorDto")
-	Set<Order> orderDtoSet;
+	@OneToMany(mappedBy = "vendor")
+	Set<Order> orderSet;
 
 }

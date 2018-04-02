@@ -54,10 +54,10 @@ public class Customer implements Serializable{
     @CreatedDate
 	Date signupDate;
 	
-	@OneToMany(mappedBy = "customerDto")
-	Set<CustomerAddress> customerAddressDtoSet;
+	@OneToMany(mappedBy = "customer")
+	Set<CustomerAddress> customerAddressSet;
 	
-	@OneToMany(mappedBy = "customerDto")
-	Set<Order> orderDtoSet;
+	@OneToMany(mappedBy = "customer")
+	Set<Order> orderSet;
 	
 }

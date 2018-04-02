@@ -22,9 +22,9 @@ public class VendorItemsDto {
 	
 	AvailabilityStatus availabilityStatus;
 
-	public VendorItemsDto(VendorItems vendorItemsDto) {
-		Item itemDto = vendorItemsDto.getItemDto();
-		this.availabilityStatus = vendorItemsDto.getAvailabilityStatus();
+	public VendorItemsDto(VendorItems vendorItems) {
+		Item itemDto = vendorItems.getItem();
+		this.availabilityStatus = vendorItems.getAvailabilityStatus();
 		this.itemId = itemDto.getItemId();
 		this.itemName = itemDto.getItemName();
 		this.itemCategory = itemDto.getItemCategory();

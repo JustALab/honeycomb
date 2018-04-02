@@ -40,7 +40,7 @@ public class OrderFeedback implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "order_number")
-	Order orderDto;
+	Order order;
 	
 	//integer representation of rating from 1 to 5.
 	OrderRating orderRating;

@@ -29,11 +29,11 @@ public class OrderItems implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "order_number")
-	Order orderDto;
+	Order order;
 	
 	@OneToOne
 	@JoinColumn(name = "item_id")
-	Item itemDto;
+	Item item;
 	
 	@Column(nullable = false)
 	Integer quantity;
