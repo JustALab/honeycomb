@@ -6,15 +6,15 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.honeycakesin.dto.AuthorityDto;
-import com.honeycakesin.dto.UserDto;
+import com.honeycakesin.entities.Authority;
+import com.honeycakesin.entities.User;
 
 public final class JwtUserFactory {
 
     private JwtUserFactory() {
     }
 
-    public static JwtUser create(UserDto user) {
+    public static JwtUser create(User user) {
         return new JwtUser(
                 user.getId(),
                 user.getUsername(),
@@ -28,7 +28,7 @@ public final class JwtUserFactory {
         );
     }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<AuthorityDto> authorities) {
+    private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
         return authorities.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName().name()))
                 .collect(Collectors.toList());

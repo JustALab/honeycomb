@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,11 +6,13 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.constants.OrderRating;
+import com.honeycakesin.constants.OtpFor;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -30,27 +32,25 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = { "feedbackTime" }, allowGetters = true)
-@Table(name = "order_feedback")
-public class OrderFeedbackDto implements Serializable{
+@JsonIgnoreProperties(value = { "notificationDateTime" }, allowGetters = true)
+@Table(name = "customer_otp")
+public class CustomerOtp implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long feedbackId;
+	Long otpId;
 	
-	@OneToOne
-	@JoinColumn(name = "order_number")
-	OrderDto orderDto;
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	Customer customerDto;
 	
-	//integer representation of rating from 1 to 5.
-	OrderRating orderRating;
+	@Enumerated(EnumType.STRING)
+	OtpFor otpFor;
 	
-	@Column(nullable = true)
-	String comments;
+	String otpValue;
 	
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@CreatedDate
-	Date feedbackDateTime;
-	
+    @CreatedDate
+	Date generatedDateTime;
 }

@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "items")
-public class ItemDto implements Serializable {
+public class Item implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +51,6 @@ public class ItemDto implements Serializable {
 	 */
 	@JsonIgnore
 	@OneToMany(mappedBy = "itemDto")
-	Set<VendorItemsDto> vendorItemsDtoSet;
+	Set<VendorItems> vendorItemsDtoSet;
 
 }

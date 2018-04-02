@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.util.Date;
 import java.util.List;
@@ -22,7 +22,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "USER")
-public class UserDto {
+public class User {
 
     @Id
     @Column(name = "ID")
@@ -63,6 +63,6 @@ public class UserDto {
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
-    private List<AuthorityDto> authorities;
+    private List<Authority> authorities;
 
 }

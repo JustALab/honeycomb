@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.honeycakesin.dto.LocationDto;
-import com.honeycakesin.dto.VendorItemsDto;
+import com.honeycakesin.entities.Location;
+import com.honeycakesin.entities.VendorItems;
 import com.honeycakesin.repository.LocationRepository;
 import com.honeycakesin.repository.VendorItemsRepository;
 
@@ -34,7 +34,7 @@ public class CustomerOrderService {
 	 * 
 	 * @return List of locations.
 	 */
-	public List<LocationDto> getLocationList(){
+	public List<Location> getLocationList(){
 		return locationRepository.findAllLocationsWithOnlyVendorId();
 	}
 	
@@ -44,7 +44,7 @@ public class CustomerOrderService {
 	 * @param vendorId
 	 * @return List of items available with the vendor.
 	 */
-	public List<VendorItemsDto> getVendorItemsList(Long vendorId){
+	public List<VendorItems> getVendorItemsList(Long vendorId){
 		return vendorItemsRepository.findAllByVendorId(vendorId);
 	}
 		

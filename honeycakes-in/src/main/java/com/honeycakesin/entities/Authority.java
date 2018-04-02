@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "authority")
-public class AuthorityDto {
+public class Authority {
 
     @Id
     @Column(name = "ID")
@@ -34,6 +34,6 @@ public class AuthorityDto {
     private AuthorityName name;
 
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
-    private List<UserDto> users;
+    private List<User> users;
     
 }

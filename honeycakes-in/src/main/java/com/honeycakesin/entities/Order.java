@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -39,7 +39,7 @@ import lombok.experimental.FieldDefaults;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "orderDateTime" }, allowGetters = true)
 @Table(name = "orders")
-public class OrderDto implements Serializable {
+public class Order implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,11 +47,11 @@ public class OrderDto implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
-	CustomerDto customerDto;
+	Customer customerDto;
 
 	@ManyToOne
 	@JoinColumn(name = "vendor_id")
-	VendorDto vendorDto;
+	Vendor vendorDto;
 
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -77,8 +77,8 @@ public class OrderDto implements Serializable {
 	FeedbackStatus feedbackStatus;
 	
 	@OneToMany(mappedBy = "orderDto")
-	Set<OrderItemsDto> orderItemsDtoSet;
+	Set<OrderItems> orderItemsDtoSet;
 	
 	@OneToOne(mappedBy = "orderDto")
-	OrderFeedbackDto orderFeedbackDto;
+	OrderFeedback orderFeedbackDto;
 }

@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "order_items")
-public class OrderItemsDto implements Serializable{
+public class OrderItems implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +29,11 @@ public class OrderItemsDto implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "order_number")
-	OrderDto orderDto;
+	Order orderDto;
 	
 	@OneToOne
 	@JoinColumn(name = "item_id")
-	ItemDto itemDto;
+	Item itemDto;
 	
 	@Column(nullable = false)
 	Integer quantity;

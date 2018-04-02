@@ -3,11 +3,11 @@ package com.honeycakesin.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.honeycakesin.dto.UserDto;
+import com.honeycakesin.entities.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserDto, Long>{
+public interface UserRepository extends JpaRepository<User, Long>{
 
-	UserDto findByUsername(String username);
+	User findByUsername(String username);
 	
 }

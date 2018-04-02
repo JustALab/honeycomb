@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.honeycakesin.dto.LocationDto;
-import com.honeycakesin.dto.VendorItemsDto;
+import com.honeycakesin.entities.Location;
+import com.honeycakesin.entities.VendorItems;
 import com.honeycakesin.service.CustomerOrderService;
 
 import lombok.AccessLevel;
@@ -38,7 +38,7 @@ public class CustomerController {
 	 * @return List of locations.
 	 */
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
-	public List<LocationDto> getLocationsList() {
+	public List<Location> getLocationsList() {
 		return customerOrderService.getLocationList();
 	}
 
@@ -49,7 +49,7 @@ public class CustomerController {
 	 * @return List of items available with the vendor.
 	 */
 	@RequestMapping(value = "/vendoritems/{vendorId}", method = RequestMethod.GET)
-	public List<VendorItemsDto> getVendorItemsList(@PathVariable("vendorId") Long vendorId) {
+	public List<VendorItems> getVendorItemsList(@PathVariable("vendorId") Long vendorId) {
 		return customerOrderService.getVendorItemsList(vendorId);
 	}
 

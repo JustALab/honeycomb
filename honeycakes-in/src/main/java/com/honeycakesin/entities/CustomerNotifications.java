@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -35,7 +35,7 @@ import lombok.experimental.FieldDefaults;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "notificationDateTime" }, allowGetters = true)
 @Table(name = "customer_notifications")
-public class CustomerNotificationsDto implements Serializable{
+public class CustomerNotifications implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +43,7 @@ public class CustomerNotificationsDto implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
-	CustomerDto customerDto;
+	Customer customerDto;
 	
 	@Enumerated(EnumType.STRING)
 	CustomerNotificationType notificationType;

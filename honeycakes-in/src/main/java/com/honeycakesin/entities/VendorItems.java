@@ -1,15 +1,19 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
-import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.honeycakesin.constants.AvailabilityStatus;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -19,35 +23,28 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "vendors")
-public class VendorDto implements Serializable {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long vendorId;
-
-	@Column(nullable = false)
-	String vendorName;
-
-	@Column(nullable = false)
-	String address;
-
-	@Column(nullable = false)
-	String contactMobile;
-
-	@Column(nullable = true)
-	String contactEmail;
-
+@Table(name = "vendor_items")
+public class VendorItems implements Serializable {
 	/**
 	 * VendorItemsDto is join table representing a ManyToMany relationship between
 	 * VendorDto & ItemDto. Since, VendorItemsDto has an extra
 	 * column(availability_status), the relationship is broken into a OneToMany
 	 * relationship and a ManyToOne relationship.
 	 */
-	@OneToMany(mappedBy = "vendorDto")
-	Set<VendorItemsDto> vendorItemsDtoSet;
-	
-	@OneToMany(mappedBy = "vendorDto")
-	Set<OrderDto> orderDtoSet;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long vendorItemsId;
+
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "vendor_id")
+	Vendor vendorDto;
+
+	@ManyToOne
+	@JoinColumn(name = "item_id")
+	Item itemDto;
+
+	@Enumerated(EnumType.STRING)
+	AvailabilityStatus availabilityStatus;
 
 }

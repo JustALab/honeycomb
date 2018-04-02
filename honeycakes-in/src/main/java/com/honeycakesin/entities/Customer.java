@@ -1,4 +1,4 @@
-package com.honeycakesin.dto;
+package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +31,7 @@ import lombok.experimental.FieldDefaults;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "signupDate" }, allowGetters = true)
 @Table(name = "customers")
-public class CustomerDto implements Serializable{
+public class Customer implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,9 +55,9 @@ public class CustomerDto implements Serializable{
 	Date signupDate;
 	
 	@OneToMany(mappedBy = "customerDto")
-	Set<CustomerAddressDto> customerAddressDtoSet;
+	Set<CustomerAddress> customerAddressDtoSet;
 	
 	@OneToMany(mappedBy = "customerDto")
-	Set<OrderDto> orderDtoSet;
+	Set<Order> orderDtoSet;
 	
 }
