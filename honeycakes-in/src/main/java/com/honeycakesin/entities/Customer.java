@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.honeycakesin.constants.VerificationStatus;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -48,6 +51,12 @@ public class Customer implements Serializable{
 	
 	@Column(unique = true, nullable = false)
 	String mobile;
+	
+	@Enumerated(EnumType.STRING)
+	VerificationStatus emailVerificationStatus;
+	
+	@Enumerated(EnumType.STRING)
+	VerificationStatus mobileVerificationStatus;
 	
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
