@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.honeycakesin.constants.DeliveryToAddressType;
 import com.honeycakesin.constants.FeedbackStatus;
 import com.honeycakesin.constants.OrderStatus;
+import com.honeycakesin.constants.PaymentMode;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -66,6 +67,9 @@ public class Order implements Serializable {
 
 	@Column(nullable = false)
 	Double totalAmount;
+	
+	@Enumerated(EnumType.STRING)
+	PaymentMode paymentMode;
 	
 	@Enumerated(EnumType.STRING)
 	DeliveryToAddressType deliveryToAddressType;
