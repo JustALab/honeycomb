@@ -5,12 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.honeycakesin.dto.CustomerDto;
 import com.honeycakesin.entities.Location;
+import com.honeycakesin.entities.Order;
 import com.honeycakesin.entities.VendorItems;
+import com.honeycakesin.security.CustomJwtTokenUtil;
 import com.honeycakesin.service.CustomerService;
 
 import lombok.AccessLevel;
@@ -30,7 +34,20 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController {
 
+	static final String AUTH_HEADER = "Authorization";
+
+	CustomJwtTokenUtil tokenUtil;
+
 	CustomerService customerOrderService;
+
+	/**
+	 * @param authorizationHeader
+	 * @return Customer DTO that contains Customer information
+	 */
+	@RequestMapping(value = "/customer", method = RequestMethod.GET)
+	public CustomerDto getCustomer(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
+		return customerOrderService.getCustomer(tokenUtil.getUsernameFromToken(authorizationHeader));
+	}
 
 	/**
 	 * getLocationList method returns a list of locations available.
@@ -43,7 +60,8 @@ public class CustomerController {
 	}
 
 	/**
-	 * getVendorItemsList method returns a list of items available for the specified vendor ID.
+	 * getVendorItemsList method returns a list of items available for the specified
+	 * vendor ID.
 	 * 
 	 * @param vendorId
 	 * @return List of items available with the vendor.
@@ -51,6 +69,18 @@ public class CustomerController {
 	@RequestMapping(value = "/vendoritems/{vendorId}", method = RequestMethod.GET)
 	public List<VendorItems> getVendorItemsList(@PathVariable("vendorId") Long vendorId) {
 		return customerOrderService.getVendorItemsList(vendorId);
+	}
+
+	/**
+	 * placeOrder method places order based on the params received.
+	 * 
+	 * @param authorizationHeader
+	 * @return Order
+	 */
+	@RequestMapping(value = "/order", method = RequestMethod.POST)
+	public Order placeOrder(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
+		System.out.println(tokenUtil.getUsernameFromToken(authorizationHeader));
+		return null;
 	}
 
 }
