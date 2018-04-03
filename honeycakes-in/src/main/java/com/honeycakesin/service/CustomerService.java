@@ -23,7 +23,7 @@ import lombok.experimental.FieldDefaults;
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class CustomerOrderService {
+public class CustomerService {
 	
 	LocationRepository locationRepository;
 	

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.honeycakesin.entities.Location;
 import com.honeycakesin.entities.VendorItems;
-import com.honeycakesin.service.CustomerOrderService;
+import com.honeycakesin.service.CustomerService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController {
 
-	CustomerOrderService customerOrderService;
+	CustomerService customerOrderService;
 
 	/**
 	 * getLocationList method returns a list of locations available.
