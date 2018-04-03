@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.honeycakesin.util.UserUtil;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -49,9 +47,6 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 			authToken = requestHeader.substring(7);
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(authToken);
-				
-				//Set username to UserUtil for business logics
-		        UserUtil.setUserName(username);
 			} catch (IllegalArgumentException e) {
 				log.error("an error occured during getting username from token", e);
 			} catch (ExpiredJwtException e) {
