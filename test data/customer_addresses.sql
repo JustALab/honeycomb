@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 INSERT INTO `customer_addresses` (`address_id`, `address`, `delivery_to_address_type`, `customer_id`) VALUES
 (1, 'Home Address, Chennai - 97.', 'HOME', 1),
 (2, 'Office Address, Chennai - 97.', 'OFFICE', 1),
-(3, 'OTHER', 'Other address, Chennai.', 1);
+(3, 'Other address, Chennai.', 'OTHER', 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
