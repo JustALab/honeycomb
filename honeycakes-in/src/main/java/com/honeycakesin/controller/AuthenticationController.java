@@ -27,21 +27,25 @@ import com.honeycakesin.security.JwtTokenUtil;
 import com.honeycakesin.security.JwtUser;
 import com.honeycakesin.service.JwtAuthenticationResponse;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
 @RestController
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationController {
 
     @Value("${jwt.header}")
-    private String tokenHeader;
+    String tokenHeader;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     @Qualifier("jwtUserDetailsService")
-    private UserDetailsService userDetailsService;
+    UserDetailsService userDetailsService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
@@ -57,7 +61,6 @@ public class AuthenticationController {
         final String token = authToken.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
-
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
             return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
