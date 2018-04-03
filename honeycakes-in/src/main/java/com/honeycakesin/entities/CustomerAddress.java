@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.honeycakesin.constants.DeliveryToAddressType;
 
 import lombok.AccessLevel;
@@ -30,6 +31,7 @@ public class CustomerAddress implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long addressId;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	Customer customer;
