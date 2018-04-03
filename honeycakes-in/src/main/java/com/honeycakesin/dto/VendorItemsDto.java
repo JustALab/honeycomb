@@ -18,7 +18,7 @@ public class VendorItemsDto {
 	
 	Double itemPrice;
 	
-	Integer quantitySlab;
+	Double quantitySlab;
 	
 	AvailabilityStatus availabilityStatus;
 

@@ -36,7 +36,7 @@ public class OrderItems implements Serializable{
 	Item item;
 	
 	@Column(nullable = false)
-	Integer quantity;
+	Double quantity;
 	
 	@Column(nullable = false)
 	Double price;

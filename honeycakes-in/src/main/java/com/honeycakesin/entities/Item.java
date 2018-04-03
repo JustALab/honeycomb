@@ -41,7 +41,7 @@ public class Item implements Serializable {
 	Double itemPrice;
 
 	@Column(nullable = false)
-	Integer quantitySlab;
+	Double quantitySlab;
 
 	/**
 	 * VendorItemsDto is join table representing a ManyToMany relationship between
