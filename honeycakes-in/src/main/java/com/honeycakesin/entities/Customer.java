@@ -2,7 +2,7 @@ package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,9 +64,9 @@ public class Customer implements Serializable{
 	Date signupDate;
 	
 	@OneToMany(mappedBy = "customer")
-	Set<CustomerAddress> customerAddressSet;
+	List<CustomerAddress> customerAddressList;
 	
 	@OneToMany(mappedBy = "customer")
-	Set<Order> orderSet;
+	List<Order> orderList;
 	
 }
