@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.honeycakesin.dto.CustomerDto;
-import com.honeycakesin.entities.Location;
+import com.honeycakesin.dto.LocationDto;
+import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Order;
-import com.honeycakesin.entities.VendorItems;
 import com.honeycakesin.security.CustomJwtTokenUtil;
 import com.honeycakesin.service.CustomerService;
 
@@ -55,7 +55,7 @@ public class CustomerController {
 	 * @return List of locations.
 	 */
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
-	public List<Location> getLocationsList() {
+	public List<LocationDto> getLocationsList() {
 		return customerOrderService.getLocationList();
 	}
 
@@ -67,7 +67,7 @@ public class CustomerController {
 	 * @return List of items available with the vendor.
 	 */
 	@RequestMapping(value = "/vendoritems/{vendorId}", method = RequestMethod.GET)
-	public List<VendorItems> getVendorItemsList(@PathVariable("vendorId") Long vendorId) {
+	public List<VendorItemsDto> getVendorItemsList(@PathVariable("vendorId") Long vendorId) {
 		return customerOrderService.getVendorItemsList(vendorId);
 	}
 
