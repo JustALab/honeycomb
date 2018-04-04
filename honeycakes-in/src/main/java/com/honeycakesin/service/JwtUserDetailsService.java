@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.honeycakesin.auth.JwtUserFactory;
 import com.honeycakesin.entities.User;
 import com.honeycakesin.repository.UserRepository;
-import com.honeycakesin.security.JwtUserFactory;
 
 
 @Service

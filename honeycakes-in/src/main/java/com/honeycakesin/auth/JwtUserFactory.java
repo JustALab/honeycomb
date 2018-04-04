@@ -1,4 +1,4 @@
-package com.honeycakesin.security;
+package com.honeycakesin.auth;
 
 import java.util.List;
 import java.util.stream.Collectors;

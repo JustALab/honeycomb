@@ -1,4 +1,4 @@
-package com.honeycakesin.security;
+package com.honeycakesin.auth;
 
 import java.io.Serializable;
 import java.util.Date;

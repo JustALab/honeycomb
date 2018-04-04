@@ -1,4 +1,4 @@
-package com.honeycakesin.security;
+package com.honeycakesin.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

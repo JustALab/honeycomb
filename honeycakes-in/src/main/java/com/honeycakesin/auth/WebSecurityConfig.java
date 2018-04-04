@@ -1,4 +1,4 @@
-package com.honeycakesin.config;
+package com.honeycakesin.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,9 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.honeycakesin.security.JwtAuthenticationEntryPoint;
-import com.honeycakesin.security.JwtAuthorizationTokenFilter;
-import com.honeycakesin.security.JwtTokenUtil;
 import com.honeycakesin.service.JwtUserDetailsService;
 
 @Configuration

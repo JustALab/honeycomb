@@ -1,4 +1,4 @@
-package com.honeycakesin.security;
+package com.honeycakesin.auth;
 
 import java.util.Collection;
 import java.util.Date;

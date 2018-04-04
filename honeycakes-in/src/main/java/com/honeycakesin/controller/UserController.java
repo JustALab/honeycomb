@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.honeycakesin.security.JwtTokenUtil;
-import com.honeycakesin.security.JwtUser;
+import com.honeycakesin.auth.JwtTokenUtil;
+import com.honeycakesin.auth.JwtUser;
 
 @RestController
 public class UserController {
