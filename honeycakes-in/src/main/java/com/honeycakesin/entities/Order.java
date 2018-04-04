@@ -59,11 +59,11 @@ public class Order implements Serializable {
 	@CreatedDate
 	Date orderDateTime;
 
-	@Temporal(TemporalType.DATE)
-	Date deliveryDate;
+	@Column(nullable = false)
+	String deliveryDate;
 
-	@Temporal(TemporalType.TIME)
-	Date deliveryTime;
+	@Column(nullable = false)
+	String deliveryTime;
 
 	@Column(nullable = false)
 	Double totalAmount;
