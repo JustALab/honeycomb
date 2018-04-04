@@ -2,15 +2,19 @@ package com.honeycakesin.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.honeycakesin.dto.CustomerDto;
+import com.honeycakesin.dto.CustomerOrderDto;
 import com.honeycakesin.dto.LocationDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Order;
@@ -77,7 +81,8 @@ public class CustomerController {
 	 * @return Order
 	 */
 	@RequestMapping(value = "/order", method = RequestMethod.POST)
-	public Order placeOrder(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
+	public Order placeOrder(@RequestHeader(value = AUTH_HEADER) String authorizationHeader,
+			@Valid @RequestBody CustomerOrderDto orderDto) {
 		System.out.println(tokenUtil.getUsernameFromToken(authorizationHeader));
 		return null;
 	}
