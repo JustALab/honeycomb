@@ -2,7 +2,7 @@ package com.honeycakesin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -81,7 +81,7 @@ public class Order implements Serializable {
 	FeedbackStatus feedbackStatus;
 	
 	@OneToMany(mappedBy = "order")
-	Set<OrderItems> orderItemsSet;
+	List<OrderItems> orderItemsList;
 	
 	@OneToOne(mappedBy = "order")
 	OrderFeedback orderFeedback;
