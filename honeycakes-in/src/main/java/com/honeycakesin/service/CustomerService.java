@@ -86,6 +86,16 @@ public class CustomerService {
 		return vendorItemsRepository.findAllByVendorId(vendorId);
 	}
 
+	/**
+	 * placeOrder method saves compares the price values of customerOrderDto with
+	 * the values from the db, then checks if the customerAdress already exists
+	 * before placing the order. If customer address already exists, the address is
+	 * updated otherwise a new customerAddress object is created.
+	 * 
+	 * @param customer
+	 * @param customerOrderDto
+	 * @return Order
+	 */
 	public Order placeOrder(Customer customer, CustomerOrderDto customerOrderDto) {
 		Order order = new Order();
 		order.setCustomer(customer);
@@ -111,9 +121,9 @@ public class CustomerService {
 		order.setOrderItemsList(orderItemsEntityList);
 
 		CustomerAddress customerAddress = getCustomerAddressIfExists(customer.getCustomerId(),
-				customerOrderDto.getDeliveryAddressType());	
-		if(!Objects.nonNull(customerAddress)) {
-			customerAddress = new CustomerAddress();	
+				customerOrderDto.getDeliveryAddressType());
+		if (!Objects.nonNull(customerAddress)) {
+			customerAddress = new CustomerAddress();
 		}
 		customerAddress.setCustomer(customer);
 		customerAddress.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
@@ -122,6 +132,14 @@ public class CustomerService {
 		return orderRepository.save(order);
 	}
 
+	/**
+	 * getCustomerAddressIfExists method fetches the customer address for a given
+	 * customerId and deliveryAddressType
+	 * 
+	 * @param customerId
+	 * @param deliveryAddressType
+	 * @return CustomerAddress
+	 */
 	private CustomerAddress getCustomerAddressIfExists(Long customerId, DeliveryAddressType deliveryAddressType) {
 		return customerAddressRepository.findByCustomerIdAndDeliveryAddressType(customerId, deliveryAddressType);
 	}

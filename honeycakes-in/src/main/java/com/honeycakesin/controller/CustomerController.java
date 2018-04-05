@@ -76,7 +76,8 @@ public class CustomerController {
 	}
 
 	/**
-	 * placeOrder method places order based on the params received.
+	 * placeOrder method places order based on the CustomerOrderDto and Customer
+	 * received.
 	 * 
 	 * @param authorizationHeader
 	 * @return Order
