@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +29,7 @@ public class OrderItems implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long orderItemsNumber;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "order_number")
 	Order order;

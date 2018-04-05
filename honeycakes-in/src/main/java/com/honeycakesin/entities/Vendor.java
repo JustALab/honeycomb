@@ -32,10 +32,10 @@ public class Vendor implements Serializable {
 	@Column(nullable = false)
 	String address;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	String contactMobile;
 
-	@Column(nullable = true)
+	@Column(nullable = false, unique = true)
 	String contactEmail;
 
 	/**

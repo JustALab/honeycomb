@@ -18,6 +18,7 @@ import com.honeycakesin.dto.CustomerDto;
 import com.honeycakesin.dto.CustomerOrderDto;
 import com.honeycakesin.dto.LocationDto;
 import com.honeycakesin.dto.VendorItemsDto;
+import com.honeycakesin.entities.Customer;
 import com.honeycakesin.entities.Order;
 import com.honeycakesin.service.CustomerService;
 
@@ -82,9 +83,9 @@ public class CustomerController {
 	 */
 	@RequestMapping(value = "/order", method = RequestMethod.POST)
 	public Order placeOrder(@RequestHeader(value = AUTH_HEADER) String authorizationHeader,
-			@Valid @RequestBody CustomerOrderDto orderDto) {
-		System.out.println(tokenUtil.getUsernameFromToken(authorizationHeader));
-		return null;
+			@Valid @RequestBody CustomerOrderDto customerOrderDto) {
+		Customer customer = tokenUtil.getCustomer(authorizationHeader);
+		return customerOrderService.placeOrder(customer, customerOrderDto);
 	}
 
 }

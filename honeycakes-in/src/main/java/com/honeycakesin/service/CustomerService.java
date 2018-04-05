@@ -1,16 +1,27 @@
 package com.honeycakesin.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.honeycakesin.constants.FeedbackStatus;
+import com.honeycakesin.constants.OrderStatus;
 import com.honeycakesin.dto.CustomerDto;
+import com.honeycakesin.dto.CustomerOrderDto;
+import com.honeycakesin.dto.CustomerOrderItemsDto;
 import com.honeycakesin.dto.LocationDto;
 import com.honeycakesin.dto.VendorItemsDto;
+import com.honeycakesin.entities.Customer;
+import com.honeycakesin.entities.Order;
+import com.honeycakesin.entities.OrderItems;
 import com.honeycakesin.repository.CustomerRepository;
+import com.honeycakesin.repository.ItemRepository;
 import com.honeycakesin.repository.LocationRepository;
+import com.honeycakesin.repository.OrderRepository;
 import com.honeycakesin.repository.VendorItemsRepository;
+import com.honeycakesin.repository.VendorRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +42,12 @@ public class CustomerService {
 	LocationRepository locationRepository;
 
 	VendorItemsRepository vendorItemsRepository;
+	
+	OrderRepository orderRepository;
+	
+	VendorRepository vendorRepository;
+	
+	ItemRepository itemRepository;
 
 	/**
 	 * getCustomer method is used to get the user data from the CUSTOMERS table.
@@ -61,6 +78,31 @@ public class CustomerService {
 	 */
 	public List<VendorItemsDto> getVendorItemsList(Long vendorId) {
 		return vendorItemsRepository.findAllByVendorId(vendorId);
+	}
+
+	public Order placeOrder(Customer customer, CustomerOrderDto customerOrderDto) {
+		Order order = new Order();
+		order.setCustomer(customer);
+		order.setVendor(vendorRepository.findVendorById(customerOrderDto.getVendorId()));
+		order.setDeliveryDate(customerOrderDto.getDeliveryDate());
+		order.setDeliveryTime(customerOrderDto.getDeliveryTime());
+		order.setTotalAmount(customerOrderDto.getTotalAmount());
+		order.setPaymentMode(customerOrderDto.getPaymentMode());
+		order.setDeliveryToAddressType(customerOrderDto.getDeliveryToAddressType());
+		order.setFeedbackStatus(FeedbackStatus.NOT_SUBMITTED);
+		order.setOrderStatus(OrderStatus.PLACED);		
+		List<OrderItems> orderItemsEntityList = new ArrayList<>();
+		List<CustomerOrderItemsDto> customerOrderItemsDtoList = customerOrderDto.getOrderItemsList();
+		customerOrderItemsDtoList.stream().forEach(orderItemDto -> {
+			OrderItems orderItemsEntity = new OrderItems();
+			orderItemsEntity.setPrice(orderItemDto.getPrice());
+			orderItemsEntity.setQuantity(orderItemDto.getQuantity());
+			orderItemsEntity.setItem(itemRepository.findItemByItemId(orderItemDto.getItemId()));
+			orderItemsEntity.setOrder(order);
+			orderItemsEntityList.add(orderItemsEntity);
+		});
+		order.setOrderItemsList(orderItemsEntityList);
+		return orderRepository.save(order);
 	}
 
 }

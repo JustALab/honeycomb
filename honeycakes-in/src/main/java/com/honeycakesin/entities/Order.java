@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -23,6 +24,7 @@ import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.honeycakesin.constants.DeliveryToAddressType;
 import com.honeycakesin.constants.FeedbackStatus;
@@ -46,12 +48,14 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long orderNumber;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "customer_id", nullable = false)
 	Customer customer;
 
-	@ManyToOne
-	@JoinColumn(name = "vendor_id")
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "vendor_id", nullable = false)
 	Vendor vendor;
 
 	@Column(nullable = false, updatable = false)
@@ -80,9 +84,10 @@ public class Order implements Serializable {
 	@Enumerated(EnumType.STRING)
 	FeedbackStatus feedbackStatus;
 	
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	List<OrderItems> orderItemsList;
 	
-	@OneToOne(mappedBy = "order")
+	@JsonIgnore
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	OrderFeedback orderFeedback;
 }

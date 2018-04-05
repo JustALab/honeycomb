@@ -12,7 +12,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	
 	String FIND_BY_EMAIL = "SELECT new com.honeycakesin.dto.CustomerDto(c) FROM Customer c WHERE c.email = ?1";
 	
+	String FIND_CUSTOMER_BY_EMAIL = "SELECT c FROM Customer c WHERE c.email = ?1";
+	
 	@Query(FIND_BY_EMAIL)
 	CustomerDto findByEmail(String email);
+	
+	@Query(FIND_CUSTOMER_BY_EMAIL)
+	Customer findCustomerByEmail(String email);
 	
 }

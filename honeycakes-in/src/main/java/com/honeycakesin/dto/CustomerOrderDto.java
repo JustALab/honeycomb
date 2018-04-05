@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import com.honeycakesin.constants.DeliveryToAddressType;
 import com.honeycakesin.constants.PaymentMode;
 import com.honeycakesin.entities.Order;
-import com.honeycakesin.entities.OrderItems;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,7 @@ public class CustomerOrderDto implements Serializable {
 	DeliveryToAddressType deliveryToAddressType;
 
 	@NotNull
-	List<OrderItems> orderItemsList;
+	List<CustomerOrderItemsDto> orderItemsList;
 
 	public CustomerOrderDto(Order order) {
 		this.vendorId = order.getVendor().getVendorId();
@@ -46,7 +45,7 @@ public class CustomerOrderDto implements Serializable {
 		this.totalAmount = order.getTotalAmount();
 		this.paymentMode = order.getPaymentMode();
 		this.deliveryToAddressType = order.getDeliveryToAddressType();
-		this.orderItemsList = order.getOrderItemsList();
+//		this.orderItemsDtoList = order.getOrderItemsList();
 	}
 
 }
