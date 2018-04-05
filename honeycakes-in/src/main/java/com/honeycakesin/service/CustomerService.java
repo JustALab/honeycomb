@@ -3,6 +3,7 @@ package com.honeycakesin.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.honeycakesin.dto.LocationDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Customer;
 import com.honeycakesin.entities.CustomerAddress;
+import com.honeycakesin.entities.Item;
 import com.honeycakesin.entities.Order;
 import com.honeycakesin.entities.OrderItems;
 import com.honeycakesin.repository.CustomerAddressRepository;
@@ -60,7 +62,7 @@ public class CustomerService {
 	 * 
 	 * @param username
 	 *            which is a email address of the user available in the USERS table.
-	 * @return
+	 * @return CustomerDto
 	 */
 	public CustomerDto getCustomer(String username) {
 		return customerRepository.findByEmail(username);
@@ -69,7 +71,7 @@ public class CustomerService {
 	/**
 	 * getLocationList method returns a list of locations available.
 	 * 
-	 * @return List of locations.
+	 * @return locationsList.
 	 */
 	public List<LocationDto> getLocationList() {
 		return locationRepository.findAllLocationsWithOnlyVendorId();
@@ -80,17 +82,17 @@ public class CustomerService {
 	 * vendor ID.
 	 * 
 	 * @param vendorId
-	 * @return List of items available with the vendor.
+	 * @return vendorItemsDtoList.
 	 */
 	public List<VendorItemsDto> getVendorItemsList(Long vendorId) {
 		return vendorItemsRepository.findAllByVendorId(vendorId);
 	}
 
 	/**
-	 * placeOrder method saves compares the price values of customerOrderDto with
-	 * the values from the db, then checks if the customerAdress already exists
-	 * before placing the order. If customer address already exists, the address is
-	 * updated otherwise a new customerAddress object is created.
+	 * placeOrder method computes the price values from the db, then checks if the
+	 * customerAdress already exists before placing the order. If customer address
+	 * already exists, the address is updated otherwise a new customerAddress object
+	 * is created.
 	 * 
 	 * @param customer
 	 * @param customerOrderDto
@@ -102,22 +104,28 @@ public class CustomerService {
 		order.setVendor(vendorRepository.findVendorById(customerOrderDto.getVendorId()));
 		order.setDeliveryDate(customerOrderDto.getDeliveryDate());
 		order.setDeliveryTime(customerOrderDto.getDeliveryTime());
-		order.setTotalAmount(customerOrderDto.getTotalAmount());
 		order.setPaymentMode(customerOrderDto.getPaymentMode());
 		order.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
 		order.setDeliveryAddress(customerOrderDto.getDeliveryAddress());
 		order.setFeedbackStatus(FeedbackStatus.NOT_SUBMITTED);
 		order.setOrderStatus(OrderStatus.PLACED);
+		// reset the total amount to 0. It will be computed below.
+		customerOrderDto.setTotalAmount(0d);
 		List<OrderItems> orderItemsEntityList = new ArrayList<>();
 		List<CustomerOrderItemsDto> customerOrderItemsDtoList = customerOrderDto.getOrderItemsList();
 		customerOrderItemsDtoList.stream().forEach(orderItemDto -> {
+			Long itemId = orderItemDto.getItemId();
+			Double itemPriceForQuantity = computeItemPrice(itemId, orderItemDto);
+			// add the item prices
+			customerOrderDto.setTotalAmount(customerOrderDto.getTotalAmount() + itemPriceForQuantity);
 			OrderItems orderItemsEntity = new OrderItems();
-			orderItemsEntity.setPrice(orderItemDto.getPrice());
+			orderItemsEntity.setPrice(itemPriceForQuantity);
 			orderItemsEntity.setQuantity(orderItemDto.getQuantity());
-			orderItemsEntity.setItem(itemRepository.findItemByItemId(orderItemDto.getItemId()));
+			orderItemsEntity.setItem(itemRepository.findItemByItemId(itemId));
 			orderItemsEntity.setOrder(order);
 			orderItemsEntityList.add(orderItemsEntity);
 		});
+		order.setTotalAmount(customerOrderDto.getTotalAmount());
 		order.setOrderItemsList(orderItemsEntityList);
 
 		CustomerAddress customerAddress = getCustomerAddressIfExists(customer.getCustomerId(),
@@ -130,6 +138,38 @@ public class CustomerService {
 		customerAddress.setAddress(customerOrderDto.getDeliveryAddress());
 		customerAddressRepository.save(customerAddress);
 		return orderRepository.save(order);
+	}
+
+	/**
+	 * computeItemPrice method computes the price for the item based on the item
+	 * price available in the db & the given quantity.
+	 * 
+	 * @param itemId
+	 * @param orderItemDto
+	 * @return itemPriceForQuantity
+	 */
+	private Double computeItemPrice(Long itemId, CustomerOrderItemsDto orderItemDto) {
+		Double itemPrice = getItemPrice(itemId);
+		if (Objects.nonNull(itemPrice)) {
+			Double itemPriceForQuantity = orderItemDto.getQuantity() * itemPrice;
+			return itemPriceForQuantity;
+		}
+		return itemPrice;
+	}
+
+	/**
+	 * getItemPrice method gets the item price based on the given itemId.
+	 * 
+	 * @param itemId
+	 * @return itemPrice
+	 */
+	private Double getItemPrice(Long itemId) {
+		Optional<Item> itemOptional = itemRepository.findById(itemId);
+		if (itemOptional.isPresent()) {
+			Item item = itemOptional.get();
+			return item.getItemPrice();
+		}
+		return null;
 	}
 
 	/**
