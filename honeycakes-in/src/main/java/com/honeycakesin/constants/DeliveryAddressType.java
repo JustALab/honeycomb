@@ -1,6 +1,6 @@
 package com.honeycakesin.constants;
 
-public enum DeliveryToAddressType {
+public enum DeliveryAddressType {
 
 	HOME,
 	OFFICE,

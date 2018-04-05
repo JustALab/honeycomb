@@ -26,7 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.constants.DeliveryToAddressType;
+import com.honeycakesin.constants.DeliveryAddressType;
 import com.honeycakesin.constants.FeedbackStatus;
 import com.honeycakesin.constants.OrderStatus;
 import com.honeycakesin.constants.PaymentMode;
@@ -76,7 +76,10 @@ public class Order implements Serializable {
 	PaymentMode paymentMode;
 	
 	@Enumerated(EnumType.STRING)
-	DeliveryToAddressType deliveryToAddressType;
+	DeliveryAddressType deliveryAddressType;
+	
+	@Column(nullable = false)
+	String deliveryAddress;
 
 	@Enumerated(EnumType.STRING)
 	OrderStatus orderStatus;

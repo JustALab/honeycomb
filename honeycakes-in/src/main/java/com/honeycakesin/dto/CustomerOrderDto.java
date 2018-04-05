@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.honeycakesin.constants.DeliveryToAddressType;
+import com.honeycakesin.constants.DeliveryAddressType;
 import com.honeycakesin.constants.PaymentMode;
 import com.honeycakesin.entities.Order;
 
@@ -33,7 +33,10 @@ public class CustomerOrderDto implements Serializable {
 	PaymentMode paymentMode;
 
 	@NotNull
-	DeliveryToAddressType deliveryToAddressType;
+	DeliveryAddressType deliveryAddressType;
+	
+	@NotNull
+	String deliveryAddress;
 
 	@NotNull
 	List<CustomerOrderItemsDto> orderItemsList;
@@ -44,8 +47,8 @@ public class CustomerOrderDto implements Serializable {
 		this.deliveryTime = order.getDeliveryTime();
 		this.totalAmount = order.getTotalAmount();
 		this.paymentMode = order.getPaymentMode();
-		this.deliveryToAddressType = order.getDeliveryToAddressType();
-//		this.orderItemsDtoList = order.getOrderItemsList();
+		this.deliveryAddressType = order.getDeliveryAddressType();
+		this.deliveryAddress = order.getDeliveryAddress();
 	}
 
 }

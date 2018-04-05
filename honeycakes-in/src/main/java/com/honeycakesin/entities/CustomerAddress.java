@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.honeycakesin.constants.DeliveryToAddressType;
+import com.honeycakesin.constants.DeliveryAddressType;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -37,7 +37,7 @@ public class CustomerAddress implements Serializable {
 	Customer customer;
 
 	@Enumerated(EnumType.STRING)
-	DeliveryToAddressType deliveryToAddressType;
+	DeliveryAddressType deliveryAddressType;
 	
 	@Column(nullable = true)
 	String address;

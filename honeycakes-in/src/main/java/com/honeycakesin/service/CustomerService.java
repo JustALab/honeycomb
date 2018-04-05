@@ -2,10 +2,12 @@ package com.honeycakesin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.honeycakesin.constants.DeliveryAddressType;
 import com.honeycakesin.constants.FeedbackStatus;
 import com.honeycakesin.constants.OrderStatus;
 import com.honeycakesin.dto.CustomerDto;
@@ -14,8 +16,10 @@ import com.honeycakesin.dto.CustomerOrderItemsDto;
 import com.honeycakesin.dto.LocationDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Customer;
+import com.honeycakesin.entities.CustomerAddress;
 import com.honeycakesin.entities.Order;
 import com.honeycakesin.entities.OrderItems;
+import com.honeycakesin.repository.CustomerAddressRepository;
 import com.honeycakesin.repository.CustomerRepository;
 import com.honeycakesin.repository.ItemRepository;
 import com.honeycakesin.repository.LocationRepository;
@@ -39,14 +43,16 @@ public class CustomerService {
 
 	CustomerRepository customerRepository;
 
+	CustomerAddressRepository customerAddressRepository;
+
 	LocationRepository locationRepository;
 
 	VendorItemsRepository vendorItemsRepository;
-	
+
 	OrderRepository orderRepository;
-	
+
 	VendorRepository vendorRepository;
-	
+
 	ItemRepository itemRepository;
 
 	/**
@@ -88,9 +94,10 @@ public class CustomerService {
 		order.setDeliveryTime(customerOrderDto.getDeliveryTime());
 		order.setTotalAmount(customerOrderDto.getTotalAmount());
 		order.setPaymentMode(customerOrderDto.getPaymentMode());
-		order.setDeliveryToAddressType(customerOrderDto.getDeliveryToAddressType());
+		order.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
+		order.setDeliveryAddress(customerOrderDto.getDeliveryAddress());
 		order.setFeedbackStatus(FeedbackStatus.NOT_SUBMITTED);
-		order.setOrderStatus(OrderStatus.PLACED);		
+		order.setOrderStatus(OrderStatus.PLACED);
 		List<OrderItems> orderItemsEntityList = new ArrayList<>();
 		List<CustomerOrderItemsDto> customerOrderItemsDtoList = customerOrderDto.getOrderItemsList();
 		customerOrderItemsDtoList.stream().forEach(orderItemDto -> {
@@ -102,7 +109,21 @@ public class CustomerService {
 			orderItemsEntityList.add(orderItemsEntity);
 		});
 		order.setOrderItemsList(orderItemsEntityList);
+
+		CustomerAddress customerAddress = getCustomerAddressIfExists(customer.getCustomerId(),
+				customerOrderDto.getDeliveryAddressType());	
+		if(!Objects.nonNull(customerAddress)) {
+			customerAddress = new CustomerAddress();	
+		}
+		customerAddress.setCustomer(customer);
+		customerAddress.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
+		customerAddress.setAddress(customerOrderDto.getDeliveryAddress());
+		customerAddressRepository.save(customerAddress);
 		return orderRepository.save(order);
+	}
+
+	private CustomerAddress getCustomerAddressIfExists(Long customerId, DeliveryAddressType deliveryAddressType) {
+		return customerAddressRepository.findByCustomerIdAndDeliveryAddressType(customerId, deliveryAddressType);
 	}
 
 }
