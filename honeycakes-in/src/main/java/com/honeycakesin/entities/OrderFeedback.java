@@ -42,7 +42,7 @@ public class OrderFeedback implements Serializable{
 	@JoinColumn(name = "order_number")
 	Order order;
 	
-	//integer representation of rating from 1 to 5.
+	/** integer representation of rating from 1 to 5. */
 	OrderRating orderRating;
 	
 	@Column(nullable = true)

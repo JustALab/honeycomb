@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 import com.honeycakesin.constants.DeliveryAddressType;
+import com.honeycakesin.constants.FeedbackStatus;
 import com.honeycakesin.constants.OrderStatus;
 import com.honeycakesin.constants.PaymentMode;
 import com.honeycakesin.entities.Order;
@@ -21,11 +22,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomerOrderDto implements Serializable {
 
-	/** orderDateTime will be populated only for response. */
+	/** orderNumber will be populated only for response. */
 	@Null
 	Long orderNumber;
 
-	/** orderDateTime will be populated only for response. */
+	/** vendorName will be populated only for response. */
 	@Null
 	String vendorName;
 
@@ -52,9 +53,13 @@ public class CustomerOrderDto implements Serializable {
 
 	@NotNull
 	List<CustomerOrderItemsDto> orderItemsList;
-	
+
 	@Null
 	OrderStatus orderStatus;
+
+	/** feedbackStatus will be populated only for response. */
+	@Null
+	FeedbackStatus feedbackStatus;
 
 	/** orderDateTime will be populated only for response. */
 	@Null
@@ -77,6 +82,7 @@ public class CustomerOrderDto implements Serializable {
 		this.orderDateTime = order.getOrderDateTime();
 		this.orderItemsHistoryList = order.getOrderItemsList();
 		this.orderStatus = order.getOrderStatus();
+		this.feedbackStatus = order.getFeedbackStatus();
 	}
 
 }
