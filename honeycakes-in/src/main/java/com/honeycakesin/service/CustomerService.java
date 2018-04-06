@@ -15,16 +15,19 @@ import com.honeycakesin.dto.CustomerDto;
 import com.honeycakesin.dto.CustomerOrderDto;
 import com.honeycakesin.dto.CustomerOrderItemsDto;
 import com.honeycakesin.dto.LocationDto;
+import com.honeycakesin.dto.OrderFeedbackDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Customer;
 import com.honeycakesin.entities.CustomerAddress;
 import com.honeycakesin.entities.Item;
 import com.honeycakesin.entities.Order;
+import com.honeycakesin.entities.OrderFeedback;
 import com.honeycakesin.entities.OrderItems;
 import com.honeycakesin.repository.CustomerAddressRepository;
 import com.honeycakesin.repository.CustomerRepository;
 import com.honeycakesin.repository.ItemRepository;
 import com.honeycakesin.repository.LocationRepository;
+import com.honeycakesin.repository.OrderFeedbackRepository;
 import com.honeycakesin.repository.OrderRepository;
 import com.honeycakesin.repository.VendorItemsRepository;
 import com.honeycakesin.repository.VendorRepository;
@@ -56,6 +59,8 @@ public class CustomerService {
 	VendorRepository vendorRepository;
 
 	ItemRepository itemRepository;
+
+	OrderFeedbackRepository orderFeedbackRepository;
 
 	/**
 	 * getCustomer method is used to get the user data from the CUSTOMERS table.
@@ -192,6 +197,19 @@ public class CustomerService {
 	 */
 	public List<CustomerOrderDto> getOrderHistory(Customer customer) {
 		return orderRepository.findAllByCustomerId(customer.getCustomerId());
+	}
+
+	public OrderFeedbackDto submitOrderFeedback(Long orderNumber, OrderFeedbackDto orderFeedbackDto) {
+		Optional<Order> orderOptional = orderRepository.findById(orderNumber);
+		if (orderOptional.isPresent()) {
+			Order order = orderOptional.get();
+			OrderFeedback orderFeedback = new OrderFeedback();
+			orderFeedback.setOrder(order);
+			orderFeedback.setOrderRating(orderFeedbackDto.getOrderRating());
+			orderFeedback.setComments(orderFeedbackDto.getComments());
+			orderFeedbackRepository.save(orderFeedback);
+		}
+		return null;
 	}
 
 }

@@ -17,6 +17,7 @@ import com.honeycakesin.auth.CustomJwtTokenUtil;
 import com.honeycakesin.dto.CustomerDto;
 import com.honeycakesin.dto.CustomerOrderDto;
 import com.honeycakesin.dto.LocationDto;
+import com.honeycakesin.dto.OrderFeedbackDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Customer;
 import com.honeycakesin.entities.Order;
@@ -99,6 +100,12 @@ public class CustomerController {
 	public List<CustomerOrderDto> getOrderHistory(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
 		Customer customer = tokenUtil.getCustomer(authorizationHeader);
 		return customerOrderService.getOrderHistory(customer);
+	}
+
+	@RequestMapping(value = "/orderfeedback/{orderNumber}", method = RequestMethod.POST)
+	public OrderFeedbackDto submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
+			@Valid @RequestBody OrderFeedbackDto orderFeedbackDto) {
+		return customerOrderService.submitOrderFeedback(orderNumber, orderFeedbackDto);
 	}
 
 }

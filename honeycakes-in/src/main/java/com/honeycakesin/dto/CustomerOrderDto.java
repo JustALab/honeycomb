@@ -12,6 +12,7 @@ import com.honeycakesin.constants.FeedbackStatus;
 import com.honeycakesin.constants.OrderStatus;
 import com.honeycakesin.constants.PaymentMode;
 import com.honeycakesin.entities.Order;
+import com.honeycakesin.entities.OrderFeedback;
 import com.honeycakesin.entities.OrderItems;
 
 import lombok.Data;
@@ -60,6 +61,10 @@ public class CustomerOrderDto implements Serializable {
 	/** feedbackStatus will be populated only for response. */
 	@Null
 	FeedbackStatus feedbackStatus;
+	
+	/** feedbackStatus will be populated only for response. */
+	@Null
+	OrderFeedback orderFeedback;
 
 	/** orderDateTime will be populated only for response. */
 	@Null
@@ -83,6 +88,7 @@ public class CustomerOrderDto implements Serializable {
 		this.orderItemsHistoryList = order.getOrderItemsList();
 		this.orderStatus = order.getOrderStatus();
 		this.feedbackStatus = order.getFeedbackStatus();
+		this.orderFeedback = order.getOrderFeedback();
 	}
 
 }
