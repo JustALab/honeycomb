@@ -133,11 +133,9 @@ public class CustomerService {
 		order.setTotalAmount(customerOrderDto.getTotalAmount());
 		order.setOrderItemsList(orderItemsEntityList);
 
-		CustomerAddress customerAddress = getCustomerAddressIfExists(customer.getCustomerId(),
+		Optional<CustomerAddress> customerAddressOptional = getCustomerAddressIfExists(customer.getCustomerId(),
 				customerOrderDto.getDeliveryAddressType());
-		if (!Objects.nonNull(customerAddress)) {
-			customerAddress = new CustomerAddress();
-		}
+		CustomerAddress customerAddress = customerAddressOptional.orElse(new CustomerAddress());
 		customerAddress.setCustomer(customer);
 		customerAddress.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
 		customerAddress.setAddress(customerOrderDto.getDeliveryAddress());
@@ -185,7 +183,7 @@ public class CustomerService {
 	 * @param deliveryAddressType
 	 * @return CustomerAddress
 	 */
-	private CustomerAddress getCustomerAddressIfExists(Long customerId, DeliveryAddressType deliveryAddressType) {
+	private Optional<CustomerAddress> getCustomerAddressIfExists(Long customerId, DeliveryAddressType deliveryAddressType) {
 		return customerAddressRepository.findByCustomerIdAndDeliveryAddressType(customerId, deliveryAddressType);
 	}
 
@@ -199,6 +197,14 @@ public class CustomerService {
 		return orderRepository.findAllByCustomerId(customer.getCustomerId());
 	}
 
+	/**
+	 * submitOrderFeedback method is used to submit the order feedback for the
+	 * customer. It also updates the feedbackStatus field to 'SUBMITTED'.
+	 * 
+	 * @param orderNumber
+	 * @param orderFeedbackDto
+	 * @return OrderFeedback
+	 */
 	public OrderFeedback submitOrderFeedback(Long orderNumber, OrderFeedbackDto orderFeedbackDto) {
 		Optional<Order> orderOptional = orderRepository.findById(orderNumber);
 		if (orderOptional.isPresent()) {
