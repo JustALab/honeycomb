@@ -37,7 +37,7 @@ public class SignupService {
 	AuthorityRepository authorityRepository;
 
 	String EMAIL_ALREADY_EXISTS = "Email already exists.";
-	
+
 	String MOBILE_ALREADY_EXISTS = "Mobile number already exists.";
 
 	String USER_ADDED_SUCCESSFULLY = "User created successfully.";
@@ -45,7 +45,10 @@ public class SignupService {
 	String UNKNOWN_ERROR = "Unknown error!";
 
 	/**
-	 * addNewCustomer method is used to add a new customer.
+	 * addNewCustomer method is used to add a new customer. The method first checks
+	 * if the mobile number given already exists. If not, it creates a user record
+	 * and then creates the customer record otherwise, FAILURE status is sent as a
+	 * response.
 	 * 
 	 * @param signupDto
 	 * @return boolean
@@ -74,7 +77,9 @@ public class SignupService {
 	}
 
 	/**
-	 * addNewUser method is used to add a new user.
+	 * addNewUser method is used to add a new user. It checks if the email already
+	 * exists. If not, the user record is created otherwise, FAILURE status is sent
+	 * as a response.
 	 * 
 	 * @param signupDto
 	 * @param authorityName
