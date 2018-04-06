@@ -1,13 +1,17 @@
 package com.honeycakesin.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import com.honeycakesin.constants.DeliveryAddressType;
+import com.honeycakesin.constants.OrderStatus;
 import com.honeycakesin.constants.PaymentMode;
 import com.honeycakesin.entities.Order;
+import com.honeycakesin.entities.OrderItems;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +20,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CustomerOrderDto implements Serializable {
+
+	/** orderDateTime will be populated only for response. */
+	@Null
+	Long orderNumber;
+
+	/** orderDateTime will be populated only for response. */
+	@Null
+	String vendorName;
 
 	@NotNull
 	Long vendorId;
@@ -34,21 +46,37 @@ public class CustomerOrderDto implements Serializable {
 
 	@NotNull
 	DeliveryAddressType deliveryAddressType;
-	
+
 	@NotNull
 	String deliveryAddress;
 
 	@NotNull
 	List<CustomerOrderItemsDto> orderItemsList;
+	
+	@Null
+	OrderStatus orderStatus;
+
+	/** orderDateTime will be populated only for response. */
+	@Null
+	Date orderDateTime;
+
+	/** orderItemsHistoryList will be populated only for response. */
+	@Null
+	List<OrderItems> orderItemsHistoryList;
 
 	public CustomerOrderDto(Order order) {
+		this.orderNumber = order.getOrderNumber();
 		this.vendorId = order.getVendor().getVendorId();
+		this.vendorName = order.getVendor().getVendorName();
 		this.deliveryDate = order.getDeliveryDate();
 		this.deliveryTime = order.getDeliveryTime();
 		this.totalAmount = order.getTotalAmount();
 		this.paymentMode = order.getPaymentMode();
 		this.deliveryAddressType = order.getDeliveryAddressType();
 		this.deliveryAddress = order.getDeliveryAddress();
+		this.orderDateTime = order.getOrderDateTime();
+		this.orderItemsHistoryList = order.getOrderItemsList();
+		this.orderStatus = order.getOrderStatus();
 	}
 
 }

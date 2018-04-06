@@ -184,4 +184,14 @@ public class CustomerService {
 		return customerAddressRepository.findByCustomerIdAndDeliveryAddressType(customerId, deliveryAddressType);
 	}
 
+	/**
+	 * getOrderHistory method gets the list of orders made by the customer.
+	 * 
+	 * @param customer
+	 * @return customerOrderDtoList
+	 */
+	public List<CustomerOrderDto> getOrderHistory(Customer customer) {
+		return orderRepository.findAllByCustomerId(customer.getCustomerId());
+	}
+
 }

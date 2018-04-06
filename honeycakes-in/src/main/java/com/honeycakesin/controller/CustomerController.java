@@ -89,4 +89,16 @@ public class CustomerController {
 		return customerOrderService.placeOrder(customer, customerOrderDto);
 	}
 
+	/**
+	 * getOrderHistory method gets the list of orders made by the customer.
+	 * 
+	 * @param authorizationHeader
+	 * @return customerOrderDtoList
+	 */
+	@RequestMapping(value = "/orderhistory", method = RequestMethod.GET)
+	public List<CustomerOrderDto> getOrderHistory(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
+		Customer customer = tokenUtil.getCustomer(authorizationHeader);
+		return customerOrderService.getOrderHistory(customer);
+	}
+
 }

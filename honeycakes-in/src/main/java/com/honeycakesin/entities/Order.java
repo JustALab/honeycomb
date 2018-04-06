@@ -71,13 +71,13 @@ public class Order implements Serializable {
 
 	@Column(nullable = false)
 	Double totalAmount;
-	
+
 	@Enumerated(EnumType.STRING)
 	PaymentMode paymentMode;
-	
+
 	@Enumerated(EnumType.STRING)
 	DeliveryAddressType deliveryAddressType;
-	
+
 	@Column(nullable = false)
 	String deliveryAddress;
 
@@ -86,10 +86,10 @@ public class Order implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	FeedbackStatus feedbackStatus;
-	
+
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	List<OrderItems> orderItemsList;
-	
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	OrderFeedback orderFeedback;
