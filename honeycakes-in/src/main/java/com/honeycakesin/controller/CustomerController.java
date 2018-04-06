@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,6 @@ import com.honeycakesin.dto.OrderFeedbackDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Customer;
 import com.honeycakesin.entities.Order;
-import com.honeycakesin.entities.OrderFeedback;
 import com.honeycakesin.service.CustomerService;
 
 import lombok.AccessLevel;
@@ -112,9 +112,9 @@ public class CustomerController {
 	 * @return OrderFeedback
 	 */
 	@RequestMapping(value = "/orderfeedback/{orderNumber}", method = RequestMethod.POST)
-	public OrderFeedback submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
+	public ResponseEntity<?> submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
 			@Valid @RequestBody OrderFeedbackDto orderFeedbackDto) {
-		return customerOrderService.submitOrderFeedback(orderNumber, orderFeedbackDto);
+		return ResponseEntity.ok().build();
 	}
 
 }
