@@ -14,10 +14,15 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 	String FIND_CUSTOMER_BY_EMAIL = "SELECT c FROM Customer c WHERE c.email = ?1";
 
+	String FIND_CUSTOMER_BY_MOBILE = "SELECT c FROM Customer c WHERE c.mobile = ?1";
+
 	@Query(FIND_BY_EMAIL)
 	CustomerDto findByEmail(String email);
 
 	@Query(FIND_CUSTOMER_BY_EMAIL)
 	Customer findCustomerByEmail(String email);
+
+	@Query(FIND_CUSTOMER_BY_MOBILE)
+	Customer findCustomerByMobile(String mobile);
 
 }

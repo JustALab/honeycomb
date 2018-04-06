@@ -65,18 +65,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
             // we don't need CSRF because our token is invulnerable
             .csrf().disable()
-
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-
             // don't create session
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
             .authorizeRequests()
-
-            // Un-secure H2 Database
-            .antMatchers("/h2-console/**/**").permitAll()
-
-            .antMatchers("/hc/auth/**").permitAll()
+            .antMatchers("/hc/auth/**", "/hc/signup/**").permitAll()
             .anyRequest().authenticated();
 
         // Custom JWT based security filter
