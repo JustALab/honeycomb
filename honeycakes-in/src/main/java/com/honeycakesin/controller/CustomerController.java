@@ -114,7 +114,7 @@ public class CustomerController {
 	@RequestMapping(value = "/orderfeedback/{orderNumber}", method = RequestMethod.POST)
 	public ResponseEntity<?> submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
 			@Valid @RequestBody OrderFeedbackDto orderFeedbackDto) {
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(customerOrderService.submitOrderFeedback(orderNumber, orderFeedbackDto));
 	}
 
 }
