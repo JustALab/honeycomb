@@ -213,6 +213,8 @@ public class CustomerService {
 			orderFeedback.setOrder(order);
 			orderFeedback.setOrderRating(orderFeedbackDto.getOrderRating());
 			orderFeedback.setComments(orderFeedbackDto.getComments());
+			order.setFeedbackStatus(FeedbackStatus.SUBMITTED);
+			orderRepository.save(order);
 			return orderFeedbackRepository.save(orderFeedback);
 		}
 		return null;
