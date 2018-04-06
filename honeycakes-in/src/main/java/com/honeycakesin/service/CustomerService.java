@@ -199,7 +199,7 @@ public class CustomerService {
 		return orderRepository.findAllByCustomerId(customer.getCustomerId());
 	}
 
-	public OrderFeedbackDto submitOrderFeedback(Long orderNumber, OrderFeedbackDto orderFeedbackDto) {
+	public OrderFeedback submitOrderFeedback(Long orderNumber, OrderFeedbackDto orderFeedbackDto) {
 		Optional<Order> orderOptional = orderRepository.findById(orderNumber);
 		if (orderOptional.isPresent()) {
 			Order order = orderOptional.get();
@@ -207,7 +207,7 @@ public class CustomerService {
 			orderFeedback.setOrder(order);
 			orderFeedback.setOrderRating(orderFeedbackDto.getOrderRating());
 			orderFeedback.setComments(orderFeedbackDto.getComments());
-			orderFeedbackRepository.save(orderFeedback);
+			return orderFeedbackRepository.save(orderFeedback);
 		}
 		return null;
 	}

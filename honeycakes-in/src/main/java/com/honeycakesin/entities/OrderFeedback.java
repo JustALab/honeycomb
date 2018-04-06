@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.honeycakesin.constants.OrderRating;
 
@@ -38,6 +39,7 @@ public class OrderFeedback implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long feedbackId;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "order_number")
 	Order order;

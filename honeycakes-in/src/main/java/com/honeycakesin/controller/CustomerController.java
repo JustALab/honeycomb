@@ -21,6 +21,7 @@ import com.honeycakesin.dto.OrderFeedbackDto;
 import com.honeycakesin.dto.VendorItemsDto;
 import com.honeycakesin.entities.Customer;
 import com.honeycakesin.entities.Order;
+import com.honeycakesin.entities.OrderFeedback;
 import com.honeycakesin.service.CustomerService;
 
 import lombok.AccessLevel;
@@ -102,8 +103,16 @@ public class CustomerController {
 		return customerOrderService.getOrderHistory(customer);
 	}
 
+	/**
+	 * submitOrderFeedback method is used to submit order feedback for the specified
+	 * orderNumber.
+	 * 
+	 * @param orderNumber
+	 * @param orderFeedbackDto
+	 * @return OrderFeedback
+	 */
 	@RequestMapping(value = "/orderfeedback/{orderNumber}", method = RequestMethod.POST)
-	public OrderFeedbackDto submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
+	public OrderFeedback submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
 			@Valid @RequestBody OrderFeedbackDto orderFeedbackDto) {
 		return customerOrderService.submitOrderFeedback(orderNumber, orderFeedbackDto);
 	}
