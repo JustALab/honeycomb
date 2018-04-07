@@ -80,8 +80,6 @@ public class SignupService {
 				userSignupMessageDto.setEmailVerificationStatus(customer.getEmailVerificationStatus());
 				userSignupMessageDto.setMobile(customer.getMobile());
 				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
-			} else {
-
 			}
 		}
 		return userSignupMessageDto;
@@ -101,7 +99,7 @@ public class SignupService {
 		User checkUser = checkIfUserExists(signupDto);
 		if (Objects.nonNull(checkUser)) {
 			Customer customer = getCustomerByEmail(checkUser.getEmail());
-			if(Objects.nonNull(customer)) {
+			if (Objects.nonNull(customer)) {
 				userSignupMessageDto.setSignupStatus(UserSignupStatus.EMAIL_EXISTS);
 				userSignupMessageDto.setMessage(EMAIL_ALREADY_EXISTS);
 				userSignupMessageDto.setEmail(customer.getEmail());
