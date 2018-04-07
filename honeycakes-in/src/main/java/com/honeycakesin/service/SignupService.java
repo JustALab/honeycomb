@@ -100,7 +100,7 @@ public class SignupService {
 		user.setEmail(signupDto.getEmail());
 		user.setUsername(signupDto.getEmail());
 		user.setPassword(encodedPassword);
-		user.setEnabled(false);
+		user.setEnabled(true);
 		user.setLastPasswordResetDate(new Date());
 
 		List<Authority> authorities = new ArrayList<>();
