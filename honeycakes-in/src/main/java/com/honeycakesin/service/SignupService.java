@@ -51,14 +51,19 @@ public class SignupService {
 	 * response.
 	 * 
 	 * @param signupDto
-	 * @return boolean
+	 * @return UserSignupMessageDto
 	 */
 	public UserSignupMessageDto addNewCustomer(SignupDto signupDto) {
 		UserSignupMessageDto userSignupMessageDto;
-		if (checkIfCustomerExistsBasedOnMobile(signupDto)) {
+		Customer checkCustomer = checkIfCustomerExistsBasedOnMobile(signupDto);
+		if (Objects.nonNull(checkCustomer)) {
 			userSignupMessageDto = new UserSignupMessageDto();
-			userSignupMessageDto.setSignupStatus(UserSignupStatus.FAILURE);
+			userSignupMessageDto.setSignupStatus(UserSignupStatus.MOBILE_NUMBER_EXISTS);
 			userSignupMessageDto.setMessage(MOBILE_ALREADY_EXISTS);
+			userSignupMessageDto.setEmail(checkCustomer.getEmail());
+			userSignupMessageDto.setEmailVerificationStatus(checkCustomer.getEmailVerificationStatus());
+			userSignupMessageDto.setMobile(checkCustomer.getMobile());
+			userSignupMessageDto.setMobileVerificationStatus(checkCustomer.getMobileVerificationStatus());
 			return userSignupMessageDto;
 		} else {
 			userSignupMessageDto = addNewUser(signupDto, AuthorityName.ROLE_CUSTOMER);
@@ -71,6 +76,12 @@ public class SignupService {
 				customer.setEmailVerificationStatus(VerificationStatus.NOT_VERIFIED);
 				customer.setMobileVerificationStatus(VerificationStatus.NOT_VERIFIED);
 				customerRepository.save(customer);
+				userSignupMessageDto.setEmail(customer.getEmail());
+				userSignupMessageDto.setEmailVerificationStatus(customer.getEmailVerificationStatus());
+				userSignupMessageDto.setMobile(customer.getMobile());
+				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
+			} else {
+
 			}
 		}
 		return userSignupMessageDto;
@@ -87,9 +98,17 @@ public class SignupService {
 	 */
 	private UserSignupMessageDto addNewUser(SignupDto signupDto, AuthorityName authorityName) {
 		UserSignupMessageDto userSignupMessageDto = new UserSignupMessageDto();
-		if (checkIfUserExists(signupDto)) {
-			userSignupMessageDto.setSignupStatus(UserSignupStatus.FAILURE);
-			userSignupMessageDto.setMessage(EMAIL_ALREADY_EXISTS);
+		User checkUser = checkIfUserExists(signupDto);
+		if (Objects.nonNull(checkUser)) {
+			Customer customer = getCustomerByEmail(checkUser.getEmail());
+			if(Objects.nonNull(customer)) {
+				userSignupMessageDto.setSignupStatus(UserSignupStatus.EMAIL_EXISTS);
+				userSignupMessageDto.setMessage(EMAIL_ALREADY_EXISTS);
+				userSignupMessageDto.setEmail(customer.getEmail());
+				userSignupMessageDto.setEmailVerificationStatus(customer.getEmailVerificationStatus());
+				userSignupMessageDto.setMobile(customer.getMobile());
+				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
+			}
 			return userSignupMessageDto;
 		}
 		BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
@@ -112,7 +131,7 @@ public class SignupService {
 			userSignupMessageDto.setMessage(USER_ADDED_SUCCESSFULLY);
 			return userSignupMessageDto;
 		} else {
-			userSignupMessageDto.setSignupStatus(UserSignupStatus.FAILURE);
+			userSignupMessageDto.setSignupStatus(UserSignupStatus.UNKOWN_FAILURE);
 			userSignupMessageDto.setMessage(UNKNOWN_ERROR);
 			return userSignupMessageDto;
 		}
@@ -125,26 +144,18 @@ public class SignupService {
 	 * @param signupDto
 	 * @return boolean
 	 */
-	private boolean checkIfCustomerExistsBasedOnMobile(SignupDto signupDto) {
-		Customer customer = customerRepository.findCustomerByMobile(signupDto.getMobile());
-		if (Objects.nonNull(customer)) {
-			return true;
-		}
-		return false;
+	private Customer checkIfCustomerExistsBasedOnMobile(SignupDto signupDto) {
+		return customerRepository.findCustomerByMobile(signupDto.getMobile());
 	}
 
 	/**
 	 * checkIfUserExists method checks if user already exists based on the email.
 	 * 
 	 * @param signupDto
-	 * @return boolean
+	 * @return User
 	 */
-	private boolean checkIfUserExists(SignupDto signupDto) {
-		User user = userRepository.findByUsername(signupDto.getEmail());
-		if (Objects.nonNull(user)) {
-			return true;
-		}
-		return false;
+	private User checkIfUserExists(SignupDto signupDto) {
+		return userRepository.findByUsername(signupDto.getEmail());
 	}
 
 	/**
@@ -155,6 +166,16 @@ public class SignupService {
 	 */
 	private Authority getAuthority(AuthorityName authorityName) {
 		return authorityRepository.findByName(authorityName);
+	}
+
+	/**
+	 * getCustomerByEmail method is used to get the Customer based on the email.
+	 * 
+	 * @param email
+	 * @return Customer
+	 */
+	private Customer getCustomerByEmail(String email) {
+		return customerRepository.findCustomerByEmail(email);
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.honeycakesin.dto.MobileVerificationDto;
 import com.honeycakesin.dto.SignupDto;
 import com.honeycakesin.service.SignupService;
 
@@ -18,6 +19,10 @@ public class SignupController {
 
 	@Autowired
 	SignupService signupService;
+	
+	public ResponseEntity<?> verifyMobileNumber(@Valid @RequestBody MobileVerificationDto mobileVerification){
+		return null;
+	}
 
 	/**
 	 * addNewCustomer method is used to add a new customer. This method also adds a

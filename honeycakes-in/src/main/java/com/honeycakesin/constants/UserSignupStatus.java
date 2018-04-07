@@ -3,6 +3,7 @@ package com.honeycakesin.constants;
 public enum UserSignupStatus {
 	
 	SUCCESS,
-	FAILURE
-
+	MOBILE_NUMBER_EXISTS,
+	EMAIL_EXISTS,
+	UNKOWN_FAILURE
 }
