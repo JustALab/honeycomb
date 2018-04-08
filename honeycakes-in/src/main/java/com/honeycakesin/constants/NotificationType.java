@@ -1,6 +1,6 @@
 package com.honeycakesin.constants;
 
-public enum CustomerNotificationType {
+public enum NotificationType {
 	
 	OTP,
 	ORDER_STATUS,

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.honeycakesin.constants.AuthorityName;
 import com.honeycakesin.constants.NotificationDeliveryType;
 import com.honeycakesin.constants.NotificationStatus;
+import com.honeycakesin.constants.NotificationType;
+import com.honeycakesin.constants.NotificationUserType;
 import com.honeycakesin.constants.OtpStatus;
 import com.honeycakesin.constants.UserSignupStatus;
 import com.honeycakesin.constants.VerificationStatus;
@@ -19,11 +21,13 @@ import com.honeycakesin.dto.SignupDto;
 import com.honeycakesin.dto.UserSignupMessageDto;
 import com.honeycakesin.entities.Authority;
 import com.honeycakesin.entities.Customer;
+import com.honeycakesin.entities.Notification;
 import com.honeycakesin.entities.User;
 import com.honeycakesin.repository.AuthorityRepository;
 import com.honeycakesin.repository.CustomerRepository;
+import com.honeycakesin.repository.NotificationRepository;
 import com.honeycakesin.repository.UserRepository;
-import com.honeycakesin.util.Notification;
+import com.honeycakesin.util.NotificationSender;
 import com.honeycakesin.util.OtpGenerator;
 
 import lombok.AccessLevel;
@@ -41,7 +45,9 @@ public class SignupService {
 
 	AuthorityRepository authorityRepository;
 
-	Notification notification;
+	NotificationSender notificationSender;
+
+	NotificationRepository notificationRepository;
 
 	String EMAIL_ALREADY_EXISTS = "Email already exists.";
 
@@ -71,8 +77,7 @@ public class SignupService {
 			userSignupMessageDto.setEmailVerificationStatus(checkCustomer.getEmailVerificationStatus());
 			userSignupMessageDto.setMobile(checkCustomer.getMobile());
 			userSignupMessageDto.setMobileVerificationStatus(checkCustomer.getMobileVerificationStatus());
-			NotificationStatus notificationStatus = sendOtp(checkCustomer.getEmail(), checkCustomer.getMobile());
-			if (notificationStatus == NotificationStatus.SUCCESS) {
+			if (sendOtp(checkCustomer.getEmail(), checkCustomer.getMobile(), NotificationUserType.CUSTOMER)) {
 				userSignupMessageDto.setOtpStatus(OtpStatus.SENT);
 			} else {
 				userSignupMessageDto.setOtpStatus(OtpStatus.NOT_SENT);
@@ -93,8 +98,7 @@ public class SignupService {
 				userSignupMessageDto.setEmailVerificationStatus(customer.getEmailVerificationStatus());
 				userSignupMessageDto.setMobile(customer.getMobile());
 				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
-				NotificationStatus notificationStatus = sendOtp(customer.getEmail(), customer.getMobile());
-				if (notificationStatus == NotificationStatus.SUCCESS) {
+				if (sendOtp(customer.getEmail(), customer.getMobile(), NotificationUserType.CUSTOMER)) {
 					userSignupMessageDto.setOtpStatus(OtpStatus.SENT);
 				} else {
 					userSignupMessageDto.setOtpStatus(OtpStatus.NOT_SENT);
@@ -201,11 +205,23 @@ public class SignupService {
 	 * 
 	 * @param email
 	 * @param mobile
-	 * @return NotificationStatus
+	 * @return boolean
 	 */
-	private NotificationStatus sendOtp(String email, String mobile) {
+	private boolean sendOtp(String email, String mobile, NotificationUserType notificationUserType) {
 		String otp = OtpGenerator.generate();
 		String message = "OTP is " + otp + " for signing up with Honeycakes. Order and enjoy your cake today!";
-		return notification.notifyUser(NotificationDeliveryType.SMS, message);
+		NotificationStatus status = notificationSender.notifyUser(NotificationDeliveryType.SMS, message);
+		if (status == NotificationStatus.SUCCESS) {
+			Notification notification = new Notification();
+			notification.setDeliveryType(NotificationDeliveryType.SMS);
+			notification.setNotificationType(NotificationType.OTP);
+			notification.setMessage(message);
+			notification.setUserType(notificationUserType);
+			notification.setUserEmail(email);
+			notification.setUserMobile(mobile);
+			notificationRepository.save(notification);
+			return true;
+		}
+		return false;
 	}
 }
