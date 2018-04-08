@@ -1,8 +1,8 @@
 package com.honeycakesin.constants;
 
-public enum OtpFor {
+public enum OtpStatus {
 	
-	MOBILE,
-	EMAIL
+	SENT,
+	NOT_SENT
 
 }

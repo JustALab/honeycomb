@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.honeycakesin.dto.MobileVerificationDto;
 import com.honeycakesin.dto.SignupDto;
 import com.honeycakesin.service.SignupService;
+import com.honeycakesin.vo.MobileVerificationVo;
 
 @RestController
 @RequestMapping("/hc/signup")
@@ -19,10 +19,6 @@ public class SignupController {
 
 	@Autowired
 	SignupService signupService;
-	
-	public ResponseEntity<?> verifyMobileNumber(@Valid @RequestBody MobileVerificationDto mobileVerification){
-		return null;
-	}
 
 	/**
 	 * addNewCustomer method is used to add a new customer. This method also adds a
@@ -34,6 +30,10 @@ public class SignupController {
 	@RequestMapping(value = "/customer", method = RequestMethod.POST)
 	public ResponseEntity<?> addNewCustomer(@Valid @RequestBody SignupDto signupDto) {
 		return ResponseEntity.ok(signupService.addNewCustomer(signupDto));
+	}
+	
+	public ResponseEntity<?> verifyMobileNumber(@Valid @RequestBody MobileVerificationVo mobileVerification){
+		return null;
 	}
 
 }

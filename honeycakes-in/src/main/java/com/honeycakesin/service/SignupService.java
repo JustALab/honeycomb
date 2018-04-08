@@ -10,6 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.honeycakesin.constants.AuthorityName;
+import com.honeycakesin.constants.NotificationDeliveryType;
+import com.honeycakesin.constants.NotificationStatus;
+import com.honeycakesin.constants.OtpStatus;
 import com.honeycakesin.constants.UserSignupStatus;
 import com.honeycakesin.constants.VerificationStatus;
 import com.honeycakesin.dto.SignupDto;
@@ -20,6 +23,8 @@ import com.honeycakesin.entities.User;
 import com.honeycakesin.repository.AuthorityRepository;
 import com.honeycakesin.repository.CustomerRepository;
 import com.honeycakesin.repository.UserRepository;
+import com.honeycakesin.util.Notification;
+import com.honeycakesin.util.OtpGenerator;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +40,8 @@ public class SignupService {
 	CustomerRepository customerRepository;
 
 	AuthorityRepository authorityRepository;
+
+	Notification notification;
 
 	String EMAIL_ALREADY_EXISTS = "Email already exists.";
 
@@ -64,6 +71,12 @@ public class SignupService {
 			userSignupMessageDto.setEmailVerificationStatus(checkCustomer.getEmailVerificationStatus());
 			userSignupMessageDto.setMobile(checkCustomer.getMobile());
 			userSignupMessageDto.setMobileVerificationStatus(checkCustomer.getMobileVerificationStatus());
+			NotificationStatus notificationStatus = sendOtp(checkCustomer.getEmail(), checkCustomer.getMobile());
+			if (notificationStatus == NotificationStatus.SUCCESS) {
+				userSignupMessageDto.setOtpStatus(OtpStatus.SENT);
+			} else {
+				userSignupMessageDto.setOtpStatus(OtpStatus.NOT_SENT);
+			}
 			return userSignupMessageDto;
 		} else {
 			userSignupMessageDto = addNewUser(signupDto, AuthorityName.ROLE_CUSTOMER);
@@ -80,6 +93,12 @@ public class SignupService {
 				userSignupMessageDto.setEmailVerificationStatus(customer.getEmailVerificationStatus());
 				userSignupMessageDto.setMobile(customer.getMobile());
 				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
+				NotificationStatus notificationStatus = sendOtp(customer.getEmail(), customer.getMobile());
+				if (notificationStatus == NotificationStatus.SUCCESS) {
+					userSignupMessageDto.setOtpStatus(OtpStatus.SENT);
+				} else {
+					userSignupMessageDto.setOtpStatus(OtpStatus.NOT_SENT);
+				}
 			}
 		}
 		return userSignupMessageDto;
@@ -176,4 +195,17 @@ public class SignupService {
 		return customerRepository.findCustomerByEmail(email);
 	}
 
+	/**
+	 * sendOtp method send the OTP for the user. It saves the OTP sent to the user
+	 * in the database.
+	 * 
+	 * @param email
+	 * @param mobile
+	 * @return NotificationStatus
+	 */
+	private NotificationStatus sendOtp(String email, String mobile) {
+		String otp = OtpGenerator.generate();
+		String message = "OTP is " + otp + " for signing up with Honeycakes. Order and enjoy your cake today!";
+		return notification.notifyUser(NotificationDeliveryType.SMS, message);
+	}
 }

@@ -6,8 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +19,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.honeycakesin.constants.OtpFor;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -43,9 +40,6 @@ public class CustomerOtp implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	Customer customer;
-	
-	@Enumerated(EnumType.STRING)
-	OtpFor otpFor;
 	
 	String otpValue;
 	
