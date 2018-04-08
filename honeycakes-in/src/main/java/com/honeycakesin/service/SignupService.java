@@ -61,7 +61,7 @@ public class SignupService {
 	 * addNewCustomer method is used to add a new customer. The method first checks
 	 * if the mobile number given already exists. If not, it creates a user record
 	 * and then creates the customer record otherwise, FAILURE status is sent as a
-	 * response.
+	 * response. It also send OTP to user mobile for mobile verification.
 	 * 
 	 * @param signupDto
 	 * @return UserSignupMessageDto
