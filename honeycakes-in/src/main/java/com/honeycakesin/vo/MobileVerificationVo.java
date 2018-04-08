@@ -3,7 +3,6 @@ package com.honeycakesin.vo;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 import lombok.Data;
 
@@ -17,7 +16,7 @@ public class MobileVerificationVo implements Serializable {
 	@NotNull
 	String mobile;
 
-	@Null
+	@NotNull
 	String otp;
 
 }

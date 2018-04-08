@@ -29,6 +29,7 @@ import com.honeycakesin.repository.NotificationRepository;
 import com.honeycakesin.repository.UserRepository;
 import com.honeycakesin.util.NotificationSender;
 import com.honeycakesin.util.OtpGenerator;
+import com.honeycakesin.vo.MobileVerificationVo;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -223,5 +224,24 @@ public class SignupService {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * verifyMobileNumber method is used to verify mobile user mobile number by user
+	 * provided OTP and the one that is available in the database.
+	 * 
+	 * @param mobileVerificationVo
+	 * @return VerificationStatus
+	 */
+	public VerificationStatus verifyMobileNumber(MobileVerificationVo mobileVerificationVo) {
+		Notification notification = notificationRepository.findByCustomerMobile(mobileVerificationVo.getMobile())
+				.get(0);
+		if (notification.getMessage().contains(mobileVerificationVo.getOtp())) {
+			Customer customer = getCustomerByEmail(mobileVerificationVo.getEmail());
+			customer.setMobileVerificationStatus(VerificationStatus.VERIFIED);
+			customerRepository.save(customer);
+			return VerificationStatus.VERIFIED;
+		}
+		return VerificationStatus.NOT_VERIFIED;
 	}
 }

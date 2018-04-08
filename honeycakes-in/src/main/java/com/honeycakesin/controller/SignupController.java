@@ -31,9 +31,10 @@ public class SignupController {
 	public ResponseEntity<?> addNewCustomer(@Valid @RequestBody SignupDto signupDto) {
 		return ResponseEntity.ok(signupService.addNewCustomer(signupDto));
 	}
-	
-	public ResponseEntity<?> verifyMobileNumber(@Valid @RequestBody MobileVerificationVo mobileVerification){
-		return null;
+
+	@RequestMapping(value = "/verifymobile", method = RequestMethod.PUT)
+	public ResponseEntity<?> verifyMobileNumber(@Valid @RequestBody MobileVerificationVo mobileVerificationVo) {
+		return ResponseEntity.ok(signupService.verifyMobileNumber(mobileVerificationVo));
 	}
 
 }
