@@ -11,7 +11,7 @@ import com.honeycakesin.entities.Notification;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-	String FIND_BY_CUSTOMER_MOBILE = "SELECT n FROM Notification n WHERE n.userMobile = ?1 ORDER BY n.notificationDateTime DESC";
+	String FIND_BY_CUSTOMER_MOBILE = "SELECT n FROM Notification n WHERE n.userMobile = ?1 AND n.notificationType = \"OTP\" ORDER BY n.notificationDateTime DESC";
 
 	@Query(FIND_BY_CUSTOMER_MOBILE)
 	List<Notification> findByCustomerMobile(String mobile);
