@@ -211,7 +211,13 @@ public class SignupService {
 	private boolean sendOtp(String email, String mobile, NotificationUserType notificationUserType) {
 		String otp = OtpGenerator.generate();
 		String message = "OTP is " + otp + " for signing up with Honeycakes. Order and enjoy your cake today!";
-		NotificationStatus status = notificationSender.notifyUser(NotificationDeliveryType.SMS, message);
+		String subject = "Mobile Verification";
+		NotificationStatus status = notificationSender.notifyUser(mobile, NotificationDeliveryType.SMS, subject,
+				message);
+		
+		//test line
+		NotificationStatus status1 = notificationSender.notifyUser(email, NotificationDeliveryType.EMAIL, subject,
+				message);
 		if (status == NotificationStatus.SUCCESS) {
 			Notification notification = new Notification();
 			notification.setDeliveryType(NotificationDeliveryType.SMS);
@@ -234,8 +240,8 @@ public class SignupService {
 	 * @return VerificationStatus
 	 */
 	public VerificationStatus verifyMobileNumber(MobileVerificationVo mobileVerificationVo) {
-		Notification notification = notificationRepository.findByCustomerMobile(mobileVerificationVo.getMobile())
-				.get(0);
+		Notification notification = notificationRepository
+				.findByCustomerMobile(mobileVerificationVo.getMobile(), NotificationType.OTP).get(0);
 		if (notification.getMessage().contains(mobileVerificationVo.getOtp())) {
 			Customer customer = getCustomerByEmail(mobileVerificationVo.getEmail());
 			customer.setMobileVerificationStatus(VerificationStatus.VERIFIED);
