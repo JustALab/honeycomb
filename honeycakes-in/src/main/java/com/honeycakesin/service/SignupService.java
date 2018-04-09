@@ -14,7 +14,7 @@ import com.honeycakesin.constants.NotificationDeliveryType;
 import com.honeycakesin.constants.NotificationStatus;
 import com.honeycakesin.constants.NotificationType;
 import com.honeycakesin.constants.NotificationUserType;
-import com.honeycakesin.constants.OtpStatus;
+import com.honeycakesin.constants.SmsOrEmailStatus;
 import com.honeycakesin.constants.UserSignupStatus;
 import com.honeycakesin.constants.VerificationStatus;
 import com.honeycakesin.dto.SignupDto;
@@ -76,12 +76,22 @@ public class SignupService {
 			userSignupMessageDto.setMessage(MOBILE_ALREADY_EXISTS);
 			userSignupMessageDto.setEmail(checkCustomer.getEmail());
 			userSignupMessageDto.setEmailVerificationStatus(checkCustomer.getEmailVerificationStatus());
+			if(checkCustomer.getEmailVerificationStatus() != VerificationStatus.VERIFIED) {
+				//email call 
+				userSignupMessageDto.setVerificationEmailStatus(SmsOrEmailStatus.SENT);
+			} else {
+				userSignupMessageDto.setVerificationEmailStatus(SmsOrEmailStatus.NOT_SENT);
+			}
 			userSignupMessageDto.setMobile(checkCustomer.getMobile());
 			userSignupMessageDto.setMobileVerificationStatus(checkCustomer.getMobileVerificationStatus());
-			if (sendOtp(checkCustomer.getEmail(), checkCustomer.getMobile(), NotificationUserType.CUSTOMER)) {
-				userSignupMessageDto.setOtpStatus(OtpStatus.SENT);
+			if(checkCustomer.getMobileVerificationStatus() != VerificationStatus.VERIFIED) {
+				if (sendOtp(checkCustomer.getEmail(), checkCustomer.getMobile(), NotificationUserType.CUSTOMER)) {
+					userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.SENT);
+				} else {
+					userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
+				}
 			} else {
-				userSignupMessageDto.setOtpStatus(OtpStatus.NOT_SENT);
+				userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
 			}
 			return userSignupMessageDto;
 		} else {
@@ -97,12 +107,22 @@ public class SignupService {
 				customerRepository.save(customer);
 				userSignupMessageDto.setEmail(customer.getEmail());
 				userSignupMessageDto.setEmailVerificationStatus(customer.getEmailVerificationStatus());
+				if(customer.getEmailVerificationStatus() != VerificationStatus.VERIFIED) {
+					//email call 
+					userSignupMessageDto.setVerificationEmailStatus(SmsOrEmailStatus.SENT);
+				} else {
+					userSignupMessageDto.setVerificationEmailStatus(SmsOrEmailStatus.NOT_SENT);
+				}
 				userSignupMessageDto.setMobile(customer.getMobile());
 				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
-				if (sendOtp(customer.getEmail(), customer.getMobile(), NotificationUserType.CUSTOMER)) {
-					userSignupMessageDto.setOtpStatus(OtpStatus.SENT);
+				if(customer.getMobileVerificationStatus() != VerificationStatus.VERIFIED) {
+					if (sendOtp(customer.getEmail(), customer.getMobile(), NotificationUserType.CUSTOMER)) {
+						userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.SENT);
+					} else {
+						userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
+					}
 				} else {
-					userSignupMessageDto.setOtpStatus(OtpStatus.NOT_SENT);
+					userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
 				}
 			}
 		}
@@ -214,10 +234,11 @@ public class SignupService {
 		String subject = "Mobile Verification";
 		NotificationStatus status = notificationSender.notifyUser(mobile, NotificationDeliveryType.SMS, subject,
 				message);
-		
-		//test line
-		NotificationStatus status1 = notificationSender.notifyUser(email, NotificationDeliveryType.EMAIL, subject,
-				message);
+
+		// test line
+		//// NotificationStatus status1 = notificationSender.notifyUser(email,
+		//// NotificationDeliveryType.EMAIL, subject,
+		// message);
 		if (status == NotificationStatus.SUCCESS) {
 			Notification notification = new Notification();
 			notification.setDeliveryType(NotificationDeliveryType.SMS);
@@ -234,7 +255,9 @@ public class SignupService {
 
 	/**
 	 * verifyMobileNumber method is used to verify mobile user mobile number by user
-	 * provided OTP and the one that is available in the database.
+	 * provided OTP and the one that is available in the database. It changes the
+	 * mobileVerificationStatus to VERIFIED and it also updates the enabled field of
+	 * the users table, so that the users can login t the systam.
 	 * 
 	 * @param mobileVerificationVo
 	 * @return VerificationStatus
@@ -246,6 +269,9 @@ public class SignupService {
 			Customer customer = getCustomerByEmail(mobileVerificationVo.getEmail());
 			customer.setMobileVerificationStatus(VerificationStatus.VERIFIED);
 			customerRepository.save(customer);
+			User user = userRepository.findByUsername(mobileVerificationVo.getEmail());
+			user.setEnabled(true);
+			userRepository.save(user);
 			return VerificationStatus.VERIFIED;
 		}
 		return VerificationStatus.NOT_VERIFIED;

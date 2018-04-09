@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
-import com.honeycakesin.constants.OtpStatus;
+import com.honeycakesin.constants.SmsOrEmailStatus;
 import com.honeycakesin.constants.UserSignupStatus;
 import com.honeycakesin.constants.VerificationStatus;
 
@@ -34,5 +34,8 @@ public class UserSignupMessageDto implements Serializable{
 	VerificationStatus mobileVerificationStatus;
 	
 	@Null
-	OtpStatus otpStatus;
+	SmsOrEmailStatus otpStatus;
+	
+	@Null
+	SmsOrEmailStatus verificationEmailStatus;
 }

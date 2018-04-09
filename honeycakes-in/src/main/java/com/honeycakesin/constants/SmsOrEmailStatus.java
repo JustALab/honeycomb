@@ -1,6 +1,6 @@
 package com.honeycakesin.constants;
 
-public enum OtpStatus {
+public enum SmsOrEmailStatus {
 	
 	SENT,
 	NOT_SENT
