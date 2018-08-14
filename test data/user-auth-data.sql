@@ -35,7 +35,7 @@ INSERT INTO `authority` (`id`, `name`) VALUES
 
 INSERT INTO `users` (`id`, `email`, `enabled`, `firstname`, `lastpasswordresetdate`, `lastname`, `password`, `username`) VALUES
 (1, 'admin@admin.com', b'1', 'admin', '2016-01-01 00:00:00', 'admin', '$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi', 'a@a.com'),
-(2, 'user@user.com', b'1', 'user', '2016-01-01 00:00:00', 'user', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'u@u.com'),
+(2, 'user@user.com', b'1', 'user', '2016-01-01 00:00:00', 'user', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', '9876543210'),
 (3, 'vendor@user.com', b'1', 'vendor', '2016-01-01 00:00:00', 'vendor', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'v@v.com');
 
 --

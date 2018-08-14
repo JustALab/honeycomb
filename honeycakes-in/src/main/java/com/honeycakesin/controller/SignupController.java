@@ -32,6 +32,13 @@ public class SignupController {
 		return ResponseEntity.ok(signupService.addNewCustomer(signupDto));
 	}
 
+	/**
+	 * verifyMobileNumber method is used to verify mobile number with the
+	 * verification code that has been sent to the user.Ï
+	 * 
+	 * @param mobileVerificationVo
+	 * @return
+	 */
 	@RequestMapping(value = "/verifymobile", method = RequestMethod.PUT)
 	public ResponseEntity<?> verifyMobileNumber(@Valid @RequestBody MobileVerificationVo mobileVerificationVo) {
 		return ResponseEntity.ok(signupService.verifyMobileNumber(mobileVerificationVo));
