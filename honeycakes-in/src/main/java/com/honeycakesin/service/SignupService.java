@@ -84,8 +84,8 @@ public class SignupService {
 	 */
 	public UserSignupMessageDto addNewCustomer(SignupDto signupDto) {
 		UserSignupMessageDto userSignupMessageDto;
-		Customer checkCustomer = checkIfCustomerExistsBasedOnMobile(signupDto);
-		Customer checkCustomerOnEmail = checkIfCustomerExistsBasedOnEmail(signupDto);
+		Customer checkCustomer = getIfCustomerExistsBasedOnMobile(signupDto.getMobile());
+		Customer checkCustomerOnEmail = getIfCustomerExistsBasedOnEmail(signupDto.getEmail());
 
 		// if mobile number exists, email address for the corresponding mobile number
 		// will be checked. If not equal, MOBILE_LINKED_WITH_OTHER_EMAIL will be
@@ -229,8 +229,8 @@ public class SignupService {
 	 * @param signupDto
 	 * @return Customer
 	 */
-	private Customer checkIfCustomerExistsBasedOnMobile(SignupDto signupDto) {
-		return customerRepository.findCustomerByMobile(signupDto.getMobile());
+	private Customer getIfCustomerExistsBasedOnMobile(String mobile) {
+		return customerRepository.findCustomerByMobile(mobile);
 	}
 
 	/**
@@ -240,8 +240,8 @@ public class SignupService {
 	 * @param signupDto
 	 * @return Customer
 	 */
-	private Customer checkIfCustomerExistsBasedOnEmail(SignupDto signupDto) {
-		return customerRepository.findCustomerByEmail(signupDto.getEmail());
+	private Customer getIfCustomerExistsBasedOnEmail(String email) {
+		return customerRepository.findCustomerByEmail(email);
 	}
 
 	/**
@@ -351,6 +351,12 @@ public class SignupService {
 				.findLatestCode(NotificationDeliveryType.SMS, mobileVerificationVo.getMobile()).get(0);
 		if (mobileVerificationVo.getOtp().equals(verificationCode.getOtp())) {
 			if (new Date().before(verificationCode.getExpirationTime())) {
+				Customer customer = getIfCustomerExistsBasedOnMobile(mobileVerificationVo.getMobile());
+				customer.setMobileVerificationStatus(VerificationStatus.VERIFIED);
+				customerRepository.save(customer);
+				User user = userRepository.findByUsername(mobileVerificationVo.getMobile());
+				user.setEnabled(true);
+				userRepository.save(user);
 				return VerificationStatus.VERIFIED;
 			} else {
 				return VerificationStatus.OTP_EXPIRED;
