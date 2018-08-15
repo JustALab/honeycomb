@@ -105,7 +105,7 @@ public class SignupService {
 			userSignupMessageDto = new UserSignupMessageDto();
 			userSignupMessageDto.setSignupStatus(UserSignupStatus.EMAIL_LINKED_WITH_OTHER_MOBILE);
 			userSignupMessageDto.setMessage(EMAIL_LINKED_WITH_OTHER_MOBILE);
-			userSignupMessageDto.setMobile(signupDto.getMobile());
+			userSignupMessageDto.setMobile(checkCustomerOnEmail.getMobile());
 			return userSignupMessageDto;
 		}
 
