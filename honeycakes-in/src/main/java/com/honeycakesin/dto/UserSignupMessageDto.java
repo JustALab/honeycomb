@@ -15,6 +15,9 @@ import lombok.Data;
 @Data
 public class UserSignupMessageDto implements Serializable{
 	
+	@Null
+	Long customerId;
+	
 	@NotNull
 	UserSignupStatus signupStatus;
 	

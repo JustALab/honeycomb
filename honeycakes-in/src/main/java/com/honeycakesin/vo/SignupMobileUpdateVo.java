@@ -8,12 +8,12 @@ import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-public class MobileVerificationVo implements Serializable {
-
+public class SignupMobileUpdateVo implements Serializable{
+	
+	@NotNull
+	Long customerId;
+	
 	@NotNull
 	String mobile;
-
-	@NotNull
-	String otp;
-
+	
 }
