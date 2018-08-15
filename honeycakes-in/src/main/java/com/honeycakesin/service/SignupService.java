@@ -125,8 +125,7 @@ public class SignupService {
 			userSignupMessageDto.setMobile(checkCustomer.getMobile());
 			userSignupMessageDto.setMobileVerificationStatus(checkCustomer.getMobileVerificationStatus());
 			if (checkCustomer.getMobileVerificationStatus() != VerificationStatus.VERIFIED) {
-				if (sendVerificationCode(checkCustomer.getEmail(), checkCustomer.getMobile(),
-						NotificationUserType.CUSTOMER)) {
+				if (sendMobileVerificationCode(checkCustomer.getMobile(), NotificationUserType.CUSTOMER)) {
 					userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.SENT);
 				} else {
 					userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
@@ -158,8 +157,7 @@ public class SignupService {
 				userSignupMessageDto.setMobile(customer.getMobile());
 				userSignupMessageDto.setMobileVerificationStatus(customer.getMobileVerificationStatus());
 				if (customer.getMobileVerificationStatus() != VerificationStatus.VERIFIED) {
-					if (sendVerificationCode(customer.getEmail(), customer.getMobile(),
-							NotificationUserType.CUSTOMER)) {
+					if (sendMobileVerificationCode(customer.getMobile(), NotificationUserType.CUSTOMER)) {
 						userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.SENT);
 					} else {
 						userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
@@ -283,7 +281,7 @@ public class SignupService {
 	 * @return boolean
 	 */
 	@SuppressWarnings("unused")
-	private boolean sendVerificationCode(String email, String mobile, NotificationUserType notificationUserType) {
+	private boolean sendMobileVerificationCode(String mobile, NotificationUserType notificationUserType) {
 		String otp = OtpGenerator.generate();
 		String message = "OTP is " + otp + " for signing up with Honeycakes. This OTP is valid for 12 HRS.";
 		String subject = "Mobile Verification";
@@ -301,7 +299,6 @@ public class SignupService {
 			notification.setNotificationType(NotificationType.OTP);
 			notification.setMessage(message);
 			notification.setUserType(notificationUserType);
-			notification.setUserEmail(email);
 			notification.setUserMobile(mobile);
 			notificationRepository.save(notification);
 			return true;
@@ -368,16 +365,22 @@ public class SignupService {
 
 	/**
 	 * updateMobileOnSignup method updates the already existing mobile number with a
-	 * new one during sign up operation by the user.
+	 * new one during sign up operation by the user. Also, triggers verification
+	 * code.
 	 * 
 	 * @param signupMobileUpdateVo
-	 * @return UpdationStatus
+	 * @return status
 	 */
-	public UpdationStatus updateMobileOnSignup(SignupMobileUpdateVo signupMobileUpdateVo) {
+	public String updateMobileOnSignup(SignupMobileUpdateVo signupMobileUpdateVo) {
+		Customer existingCustomer = getIfCustomerExistsBasedOnMobile(signupMobileUpdateVo.getMobile());
+		if (Objects.nonNull(existingCustomer)) {
+			return UserSignupStatus.MOBILE_NUMBER_EXISTS.toString();
+		}
 		Customer customer = customerRepository.findById(signupMobileUpdateVo.getCustomerId()).get();
 		customer.setMobile(signupMobileUpdateVo.getMobile());
 		customerRepository.save(customer);
-		return UpdationStatus.SUCCESS;
+		sendMobileVerificationCode(signupMobileUpdateVo.getMobile(), NotificationUserType.CUSTOMER);
+		return UpdationStatus.SUCCESS.toString();
 	}
 
 	/**
@@ -389,7 +392,7 @@ public class SignupService {
 	 */
 	public UpdationStatus resendVerificationCode(Long customerId) {
 		Customer customer = customerRepository.findById(customerId).get();
-		if (sendVerificationCode(customer.getEmail(), customer.getMobile(), NotificationUserType.CUSTOMER)) {
+		if (sendMobileVerificationCode(customer.getMobile(), NotificationUserType.CUSTOMER)) {
 			return UpdationStatus.SUCCESS;
 		}
 		return UpdationStatus.FAILURE;
