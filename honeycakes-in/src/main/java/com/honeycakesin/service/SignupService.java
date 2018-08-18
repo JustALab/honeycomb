@@ -65,6 +65,8 @@ public class SignupService {
 
 	String MOBILE_ALREADY_EXISTS = "Mobile number already exists.";
 
+	String USER_ALREADY_EXISTS = "User already exists.";
+
 	String USER_ADDED_SUCCESSFULLY = "User created successfully.";
 
 	String UNKNOWN_ERROR = "Unknown error!";
@@ -111,8 +113,8 @@ public class SignupService {
 
 		if (Objects.nonNull(checkCustomer)) {
 			userSignupMessageDto = new UserSignupMessageDto();
-			userSignupMessageDto.setSignupStatus(UserSignupStatus.MOBILE_NUMBER_EXISTS);
-			userSignupMessageDto.setMessage(MOBILE_ALREADY_EXISTS);
+			userSignupMessageDto.setSignupStatus(UserSignupStatus.USER_EXISTS);
+			userSignupMessageDto.setMessage(USER_ALREADY_EXISTS);
 			userSignupMessageDto.setEmail(checkCustomer.getEmail());
 			userSignupMessageDto.setEmailVerificationStatus(checkCustomer.getEmailVerificationStatus());
 			userSignupMessageDto.setCustomerId(checkCustomer.getCustomerId());
@@ -133,6 +135,9 @@ public class SignupService {
 			} else {
 				userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
 			}
+
+			// update firstname, lastname and password alone
+			updateCustomer(checkCustomer, signupDto);
 			return userSignupMessageDto;
 		} else {
 			userSignupMessageDto = addNewUser(signupDto, AuthorityName.ROLE_CUSTOMER);
@@ -168,6 +173,46 @@ public class SignupService {
 			}
 		}
 		return userSignupMessageDto;
+	}
+
+	/**
+	 * updateCustomer method is used to update the customer's firstname, lastname
+	 * and password alone. This method will be invoked if the user has already
+	 * registered to the system but not verified his mobile number. If that is the
+	 * case, user may register again with the same email address and password but
+	 * with a different firstname, lastname and password, so updating them is
+	 * necessary.
+	 * 
+	 * @param customer
+	 * @param signupDto
+	 */
+	private void updateCustomer(Customer customer, SignupDto signupDto) {
+		Customer updatedCustomer = customer;
+		updatedCustomer.setFirstName(signupDto.getFirstName());
+		updatedCustomer.setLastName(signupDto.getLastName());
+		customerRepository.save(updatedCustomer);
+		updateUser(signupDto);
+	}
+
+	/**
+	 * updateUser method is used to update the customer's firstname, lastname and
+	 * password alone. This method will be invoked if the user has already
+	 * registered to the system but not verified his mobile number. If that is the
+	 * case, user may register again with the same email address and password but
+	 * with a different firstname, lastname and password, so updating them is
+	 * necessary.
+	 * 
+	 * @param signupDto
+	 */
+	private void updateUser(SignupDto signupDto) {
+		User user = userRepository.findByUsername(signupDto.getMobile());
+		BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = bcryptEncoder.encode(signupDto.getPassword());
+		User updatedUser = user;
+		updatedUser.setFirstname(signupDto.getFirstName());
+		updatedUser.setLastname(signupDto.getLastName());
+		updatedUser.setPassword(encodedPassword);
+		userRepository.save(updatedUser);
 	}
 
 	/**
@@ -353,6 +398,7 @@ public class SignupService {
 				customerRepository.save(customer);
 				User user = userRepository.findByUsername(mobileVerificationVo.getMobile());
 				user.setEnabled(true);
+				user.setUsername(mobileVerificationVo.getMobile());
 				userRepository.save(user);
 				return VerificationStatus.VERIFIED;
 			} else {
@@ -377,8 +423,13 @@ public class SignupService {
 			return UserSignupStatus.MOBILE_NUMBER_EXISTS.toString();
 		}
 		Customer customer = customerRepository.findById(signupMobileUpdateVo.getCustomerId()).get();
+		String oldMobile = customer.getMobile();
 		customer.setMobile(signupMobileUpdateVo.getMobile());
 		customerRepository.save(customer);
+		// since, user log in is by mobile, update the username as the new mobile number
+		User user = userRepository.findByUsername(oldMobile);
+		user.setUsername(signupMobileUpdateVo.getMobile());
+		userRepository.save(user);
 		sendMobileVerificationCode(signupMobileUpdateVo.getMobile(), NotificationUserType.CUSTOMER);
 		return UpdationStatus.SUCCESS.toString();
 	}
