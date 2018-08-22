@@ -44,7 +44,7 @@ public class CustomerController {
 
 	CustomJwtTokenUtil tokenUtil;
 
-	CustomerService customerOrderService;
+	CustomerService customerService;
 
 	/**
 	 * @param authorizationHeader
@@ -52,7 +52,7 @@ public class CustomerController {
 	 */
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
 	public CustomerDto getCustomer(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
-		return customerOrderService.getCustomer(tokenUtil.getUsernameFromToken(authorizationHeader));
+		return customerService.getCustomer(tokenUtil.getUsernameFromToken(authorizationHeader));
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class CustomerController {
 	 */
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public List<LocationDto> getLocationsList() {
-		return customerOrderService.getLocationList();
+		return customerService.getLocationList();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class CustomerController {
 	 */
 	@RequestMapping(value = "/vendoritems/{vendorId}", method = RequestMethod.GET)
 	public List<VendorItemsDto> getVendorItemsList(@PathVariable("vendorId") Long vendorId) {
-		return customerOrderService.getVendorItemsList(vendorId);
+		return customerService.getVendorItemsList(vendorId);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class CustomerController {
 	public Order placeOrder(@RequestHeader(value = AUTH_HEADER) String authorizationHeader,
 			@Valid @RequestBody CustomerOrderDto customerOrderDto) {
 		Customer customer = tokenUtil.getCustomer(authorizationHeader);
-		return customerOrderService.placeOrder(customer, customerOrderDto);
+		return customerService.placeOrder(customer, customerOrderDto);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class CustomerController {
 	@RequestMapping(value = "/orderhistory", method = RequestMethod.GET)
 	public List<CustomerOrderDto> getOrderHistory(@RequestHeader(value = AUTH_HEADER) String authorizationHeader) {
 		Customer customer = tokenUtil.getCustomer(authorizationHeader);
-		return customerOrderService.getOrderHistory(customer);
+		return customerService.getOrderHistory(customer);
 	}
 
 	/**
@@ -114,7 +114,19 @@ public class CustomerController {
 	@RequestMapping(value = "/orderfeedback/{orderNumber}", method = RequestMethod.POST)
 	public ResponseEntity<?> submitOrderFeedback(@PathVariable("orderNumber") Long orderNumber,
 			@Valid @RequestBody OrderFeedbackDto orderFeedbackDto) {
-		return ResponseEntity.ok(customerOrderService.submitOrderFeedback(orderNumber, orderFeedbackDto));
+		return ResponseEntity.ok(customerService.submitOrderFeedback(orderNumber, orderFeedbackDto));
+	}
+
+	/**
+	 * deleteAddress method deletes the address with the given addressId.
+	 * 
+	 * @param addressId
+	 * @return ResponseEntity
+	 */
+	@RequestMapping(value = "/deleteAddress/{addressId}")
+	public ResponseEntity<?> deleteCustomerAddress(@PathVariable("addressId") Long addressId) {
+		customerService.deleteAddress(addressId);
+		return ResponseEntity.ok().build();
 	}
 
 }

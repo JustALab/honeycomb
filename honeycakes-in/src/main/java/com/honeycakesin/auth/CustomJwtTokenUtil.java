@@ -47,7 +47,7 @@ public class CustomJwtTokenUtil {
 	 */
 	public Customer getCustomer(String authorizationHeader) {
 		String username = jwtTokenUtil.getUsernameFromToken(splitAuthorizationHeader(authorizationHeader));
-		return customerRepository.findCustomerByEmail(username);
+		return customerRepository.findCustomerByMobile(username);
 	}
 
 	/**

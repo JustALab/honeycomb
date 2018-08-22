@@ -66,11 +66,11 @@ public class CustomerService {
 	 * getCustomer method is used to get the user data from the CUSTOMERS table.
 	 * 
 	 * @param username
-	 *            which is a email address of the user available in the USERS table.
+	 *            which is a mobile number of the user available in the USERS table.
 	 * @return CustomerDto
 	 */
 	public CustomerDto getCustomer(String username) {
-		return customerRepository.findByEmail(username);
+		return customerRepository.findByMobile(username);
 	}
 
 	/**
@@ -183,7 +183,8 @@ public class CustomerService {
 	 * @param deliveryAddressType
 	 * @return CustomerAddress
 	 */
-	private Optional<CustomerAddress> getCustomerAddressIfExists(Long customerId, DeliveryAddressType deliveryAddressType) {
+	private Optional<CustomerAddress> getCustomerAddressIfExists(Long customerId,
+			DeliveryAddressType deliveryAddressType) {
 		return customerAddressRepository.findByCustomerIdAndDeliveryAddressType(customerId, deliveryAddressType);
 	}
 
@@ -218,6 +219,15 @@ public class CustomerService {
 			return orderFeedbackRepository.save(orderFeedback);
 		}
 		return null;
+	}
+
+	/**
+	 * deleteAddress method deletes the address with the given addressId.
+	 * 
+	 * @param addressId
+	 */
+	public void deleteAddress(Long addressId) {
+		customerAddressRepository.deleteById(addressId);
 	}
 
 }
