@@ -133,13 +133,16 @@ public class CustomerService {
 		order.setTotalAmount(customerOrderDto.getTotalAmount());
 		order.setOrderItemsList(orderItemsEntityList);
 
-		Optional<CustomerAddress> customerAddressOptional = getCustomerAddressIfExists(customer.getCustomerId(),
-				customerOrderDto.getDeliveryAddressType());
-		CustomerAddress customerAddress = customerAddressOptional.orElse(new CustomerAddress());
-		customerAddress.setCustomer(customer);
-		customerAddress.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
-		customerAddress.setAddress(customerOrderDto.getDeliveryAddress());
-		customerAddressRepository.save(customerAddress);
+		// save or update only HOME and OFFICE address.
+		if (customerOrderDto.getDeliveryAddressType() != DeliveryAddressType.OTHER) {
+			Optional<CustomerAddress> customerAddressOptional = getCustomerAddressIfExists(customer.getCustomerId(),
+					customerOrderDto.getDeliveryAddressType());
+			CustomerAddress customerAddress = customerAddressOptional.orElse(new CustomerAddress());
+			customerAddress.setCustomer(customer);
+			customerAddress.setDeliveryAddressType(customerOrderDto.getDeliveryAddressType());
+			customerAddress.setAddress(customerOrderDto.getDeliveryAddress());
+			customerAddressRepository.save(customerAddress);
+		}
 		return orderRepository.save(order);
 	}
 
