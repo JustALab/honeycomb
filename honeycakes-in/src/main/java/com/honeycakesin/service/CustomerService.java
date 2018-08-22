@@ -187,6 +187,15 @@ public class CustomerService {
 			DeliveryAddressType deliveryAddressType) {
 		return customerAddressRepository.findByCustomerIdAndDeliveryAddressType(customerId, deliveryAddressType);
 	}
+	
+	/**
+	 * deleteAddress method deletes the address with the given addressId.
+	 * 
+	 * @param addressId
+	 */
+	public void deleteAddress(Long addressId) {
+		customerAddressRepository.deleteById(addressId);
+	}Ï
 
 	/**
 	 * getOrderHistory method gets the list of orders made by the customer.
@@ -219,15 +228,6 @@ public class CustomerService {
 			return orderFeedbackRepository.save(orderFeedback);
 		}
 		return null;
-	}
-
-	/**
-	 * deleteAddress method deletes the address with the given addressId.
-	 * 
-	 * @param addressId
-	 */
-	public void deleteAddress(Long addressId) {
-		customerAddressRepository.deleteById(addressId);
 	}
 
 }
