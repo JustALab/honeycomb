@@ -2,15 +2,19 @@ package com.honeycakesin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.honeycakesin.constants.DeliveryAddressType;
 import com.honeycakesin.constants.FeedbackStatus;
 import com.honeycakesin.constants.OrderStatus;
+import com.honeycakesin.constants.PasswordChangeStatus;
 import com.honeycakesin.dto.CustomerDto;
 import com.honeycakesin.dto.CustomerOrderDto;
 import com.honeycakesin.dto.CustomerOrderItemsDto;
@@ -23,12 +27,14 @@ import com.honeycakesin.entities.Item;
 import com.honeycakesin.entities.Order;
 import com.honeycakesin.entities.OrderFeedback;
 import com.honeycakesin.entities.OrderItems;
+import com.honeycakesin.entities.User;
 import com.honeycakesin.repository.CustomerAddressRepository;
 import com.honeycakesin.repository.CustomerRepository;
 import com.honeycakesin.repository.ItemRepository;
 import com.honeycakesin.repository.LocationRepository;
 import com.honeycakesin.repository.OrderFeedbackRepository;
 import com.honeycakesin.repository.OrderRepository;
+import com.honeycakesin.repository.UserRepository;
 import com.honeycakesin.repository.VendorItemsRepository;
 import com.honeycakesin.repository.VendorRepository;
 
@@ -61,6 +67,8 @@ public class CustomerService {
 	ItemRepository itemRepository;
 
 	OrderFeedbackRepository orderFeedbackRepository;
+
+	UserRepository userRepository;
 
 	/**
 	 * getCustomer method is used to get the user data from the CUSTOMERS table.
@@ -231,6 +239,27 @@ public class CustomerService {
 	 */
 	public void deleteAddress(Long addressId) {
 		customerAddressRepository.deleteById(addressId);
+	}
+
+	/**
+	 * changePassword method is used to change password for the given user.
+	 * 
+	 * @param customer
+	 * @param passwordMap
+	 * @return PasswordChangeStatus
+	 */
+	public PasswordChangeStatus changePassword(Customer customer, Map<String, String> passwordMap) {
+		User user = userRepository.findByUsername(customer.getMobile());
+		BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
+		String oldPassword = passwordMap.get("oldPassword");
+		if (BCrypt.checkpw(oldPassword, user.getPassword())) {
+			String newPassword = bcryptEncoder.encode(passwordMap.get("newPassword"));
+			user.setPassword(newPassword);
+			userRepository.save(user);
+			return PasswordChangeStatus.SUCCESS;
+		} else {
+			return PasswordChangeStatus.INCORRECT_OLD_PASSWORD;
+		}
 	}
 
 }

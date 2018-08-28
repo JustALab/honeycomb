@@ -1,6 +1,7 @@
 package com.honeycakesin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -123,10 +124,24 @@ public class CustomerController {
 	 * @param addressId
 	 * @return ResponseEntity
 	 */
-	@RequestMapping(value = "/deleteAddress/{addressId}")
+	@RequestMapping(value = "/deleteAddress/{addressId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteCustomerAddress(@PathVariable("addressId") Long addressId) {
 		customerService.deleteAddress(addressId);
 		return ResponseEntity.ok().build();
+	}
+
+	/**
+	 * changePassword method is used to change password for the given user.
+	 * 
+	 * @param authorizationHeader
+	 * @param passwordMap
+	 * @return ResponseEntity
+	 */
+	@RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
+	public ResponseEntity<?> changePassword(@RequestHeader(value = AUTH_HEADER) String authorizationHeader,
+			@RequestBody Map<String, String> passwordMap) {
+		Customer customer = tokenUtil.getCustomer(authorizationHeader);
+		return ResponseEntity.ok(customerService.changePassword(customer, passwordMap));
 	}
 
 }
