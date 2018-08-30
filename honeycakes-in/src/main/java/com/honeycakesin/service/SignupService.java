@@ -136,7 +136,7 @@ public class SignupService {
 				userSignupMessageDto.setOtpStatus(SmsOrEmailStatus.NOT_SENT);
 			}
 
-			// update firstname, lastname and password alone
+			// update firstname, lastname, gender and password alone
 			updateCustomer(checkCustomer, signupDto);
 			return userSignupMessageDto;
 		} else {
@@ -145,6 +145,7 @@ public class SignupService {
 				Customer customer = new Customer();
 				customer.setFirstName(signupDto.getFirstName());
 				customer.setLastName(signupDto.getLastName());
+				customer.setGender(signupDto.getGender());
 				customer.setEmail(signupDto.getEmail());
 				customer.setMobile(signupDto.getMobile());
 				customer.setEmailVerificationStatus(VerificationStatus.NOT_VERIFIED);
@@ -190,6 +191,7 @@ public class SignupService {
 		Customer updatedCustomer = customer;
 		updatedCustomer.setFirstName(signupDto.getFirstName());
 		updatedCustomer.setLastName(signupDto.getLastName());
+		updatedCustomer.setGender(signupDto.getGender());
 		customerRepository.save(updatedCustomer);
 		updateUser(signupDto);
 	}

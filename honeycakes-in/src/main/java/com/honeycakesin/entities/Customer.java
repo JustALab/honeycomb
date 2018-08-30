@@ -21,6 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.honeycakesin.constants.Gender;
 import com.honeycakesin.constants.VerificationStatus;
 
 import lombok.AccessLevel;
@@ -51,6 +52,9 @@ public class Customer implements Serializable{
 	
 	@Column(unique = true, nullable = false)
 	String mobile;
+	
+	@Enumerated(EnumType.STRING)
+	Gender gender;
 	
 	@Enumerated(EnumType.STRING)
 	VerificationStatus emailVerificationStatus;

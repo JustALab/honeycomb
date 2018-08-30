@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import com.honeycakesin.constants.Gender;
+
 import lombok.Data;
 
 @SuppressWarnings("serial")
@@ -15,6 +17,9 @@ public class SignupDto implements Serializable {
 
 	@NotNull
 	String lastName;
+	
+	@NotNull
+	Gender gender;
 
 	@NotNull
 	String email;

@@ -3,5 +3,6 @@
 	"lastName": "Ramasamy",
 	"email": "r3@r.com",
 	"mobile": "9894130826",
-	"password": "12345"
+	"password": "12345",
+	"gender": "MALE"
 }
