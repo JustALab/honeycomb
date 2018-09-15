@@ -21,6 +21,8 @@ public class VendorItemsDto {
 	Double quantitySlab;
 	
 	AvailabilityStatus availabilityStatus;
+	
+	String imageUrl;
 
 	public VendorItemsDto(VendorItems vendorItems) {
 		Item itemDto = vendorItems.getItem();
@@ -30,6 +32,7 @@ public class VendorItemsDto {
 		this.itemCategory = itemDto.getItemCategory();
 		this.itemPrice = itemDto.getItemPrice();
 		this.quantitySlab = itemDto.getQuantitySlab();
+		this.imageUrl = itemDto.getImageUrl();
 	}
 
 }

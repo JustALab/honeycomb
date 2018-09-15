@@ -42,6 +42,9 @@ public class Item implements Serializable {
 
 	@Column(nullable = false)
 	Double quantitySlab;
+	
+	@Column(nullable = true)
+	String imageUrl;
 
 	/**
 	 * VendorItemsDto is join table representing a ManyToMany relationship between
