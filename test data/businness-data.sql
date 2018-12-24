@@ -97,6 +97,18 @@ INSERT INTO `locations` (`location_id`, `location_name`, `vendor_id`) VALUES
 (7, 'Navallur', 4),
 (8, 'Siruseri', 4);
 
+INSERT INTO `items` (`item_id`, `item_category`, `item_name`, `item_price`, `quantity_slab`, `image_url`) VALUES
+(1, 'CAKE', 'Vanilla', 400, 1, 'https://www.warmoven.in/media/catalog/product/cache/1/image/650x650/9df78eab33525d08d6e5fb8d27136e95/h/a/happy-birthday-cake_1/www.warmoven.in-happy-birthday-cake-31.png'),
+(2, 'CAKE', 'Strawberry', 450, 1, 'https://namebirthdaycakes.com/images/styles/romantic-birthday-cake-for-my-boyfriend-with-name_b470.png'),
+(3, 'CAKE', 'Chocolate', 600, 1, 'https://iambaker.net/wp-content/uploads/2018/01/birthday-cake-BLOG1.jpg'),
+(4, 'CAKE', 'Choco Truffle', 800, 1, 'https://5.imimg.com/data5/PQ/JK/MY-48972411/chocolate-truffle-cake-500x500.png'),
+(5, 'CAKE', 'Black Forest', 850, 1, 'https://www.cakengifts.in/product-images/bfcr001-black-forest-cake-in-round/regular/black-forest-cake-in-round.jpg'),
+(6, 'CAKE', 'White Forest', 800, 1, 'https://5.imimg.com/data5/XG/PL/GLADMIN-11898347/white-forest-cake-500x500.png'),
+(7, 'PARTY_PACK', 'Party Hat', 20, 1, 'https://www.w3schools.com/html/img_girl.jpg'),
+(8, 'PARTY_PACK', 'Snow Spray', 80, 1, 'https://www.w3schools.com/html/img_girl.jpg'),
+(9, 'PARTY_PACK', 'Candle', 5, 1, 'https://www.w3schools.com/html/img_girl.jpg'),
+(10, 'PARTY_PACK', 'Fancy Candle', 20, 1, 'https://www.w3schools.com/html/img_girl.jpg');
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
